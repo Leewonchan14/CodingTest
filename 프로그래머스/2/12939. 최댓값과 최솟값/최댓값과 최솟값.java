@@ -3,8 +3,7 @@ import java.util.*;
 class Solution {
     public String solution(String s) {
         String[] arr = s.split(" ");
-        int max = Arrays.stream(arr).mapToInt(Integer::parseInt).sorted().skip(arr.length - 1).sum();
-        int min = Arrays.stream(arr).mapToInt(Integer::parseInt).sorted().limit(1).sum();
-        return "" + min + " " + max;
+        int[] arr2 = Arrays.stream(arr).mapToInt(Integer::parseInt).sorted().toArray();
+        return arr2[0] + " " + arr2[arr.length-1];
     }
 }
