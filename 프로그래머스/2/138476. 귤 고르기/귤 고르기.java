@@ -2,12 +2,18 @@ import java.util.stream.*;
 import java.util.*;
 class Solution {
     public int solution(int k, int[] tangerine) {
-        int[] arr = new int[10000001];
+        
+        Map<Integer, Integer> map = new HashMap<>();
+        
         for(int i : tangerine){
-            arr[i]++;
+            if(!map.containsKey(i)){
+                map.put(i,1);
+                continue;
+            }
+            map.put(i,map.get(i) + 1);
         }
         
-        Arrays.sort(arr);
+        int[] arr =map.values().stream().sorted().mapToInt(Integer::intValue).toArray();
         
         int lastIndex = arr.length - 1;
         
