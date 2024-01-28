@@ -2,8 +2,11 @@ import java.util.stream.*;
 import java.util.*;
 class Solution {
     int[] arr;
+    
+    int[][] dp;
     public int solution(int[] elements) {
         arr = elements;
+        dp = new int[1001][1001];
         // arr = new int[]{1,2,3,4};
         Set<Integer> set = new HashSet<>();
         for(int i = 1; i <= arr.length; i++){
@@ -16,15 +19,9 @@ class Solution {
     }
     
     public int getInt(int n, int len){
-        int sum = 0;
-        for(int i = n; i - n < len ; i++ ){
-            if(arr.length > i){
-                sum += arr[i];
-                continue;
-            }
-            
-            sum += arr[i - arr.length];
-        }
-        return sum;
+        dp[n][len] = dp[n][len - 1]
+            + arr[(n + len) % arr.length];
+        
+        return dp[n][len];
     }
 }
