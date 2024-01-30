@@ -1,24 +1,26 @@
 class Solution {
+    private int[] arr;
+    private int tar;
+    private int count = 0;
+
     public int solution(int[] numbers, int target) {
-        int count = 0;
-        
-        
-        for(int i = 0; i< (int)(Math.pow(2,numbers.length) - 1); i++){
-            String bin = Integer.toBinaryString(i);
-            
-            String zeros = "0".repeat(numbers.length - bin.length());
-            
-            char[] chars = (zeros + bin).toCharArray();
-            
-            int sum = 0;
-            
-            for(int j = 0; j < chars.length ; j++){
-                sum += chars[j] == '0' ? numbers[j] * -1 : numbers[j];
-            }
-            
-            count += sum == target ? 1 : 0;
-        }
-        
+        arr = numbers;
+        tar = target;
+
+        dfs(0, 0);
+
         return count;
+    }
+
+    void dfs(int index, int sum) {
+        if (index == arr.length) {
+            if (sum == tar) {
+                count++;
+            }
+            return;
+        }
+
+        dfs(index + 1, sum + arr[index]);
+        dfs(index + 1, sum - arr[index]);
     }
 }
