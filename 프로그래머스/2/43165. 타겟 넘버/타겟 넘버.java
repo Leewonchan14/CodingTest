@@ -1,26 +1,16 @@
 class Solution {
-    private int[] arr;
-    private int tar;
-    private int count = 0;
-
     public int solution(int[] numbers, int target) {
-        arr = numbers;
-        tar = target;
-
-        dfs(0, 0);
-
-        return count;
+        int answer = 0;
+        answer = dfs(numbers, 0, 0, target);
+        return answer;
     }
-
-    void dfs(int index, int sum) {
-        if (index == arr.length) {
-            if (sum == tar) {
-                count++;
+    int dfs(int[] numbers, int n, int sum, int target) {
+        if(n == numbers.length) {
+            if(sum == target) {
+                return 1;
             }
-            return;
+            return 0;
         }
-
-        dfs(index + 1, sum + arr[index]);
-        dfs(index + 1, sum - arr[index]);
+        return dfs(numbers, n + 1, sum + numbers[n], target) + dfs(numbers, n + 1, sum - numbers[n], target);
     }
 }
