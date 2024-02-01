@@ -1,2 +1,2 @@
 def solution(my_string):
-    return my_string.replace("a", '').replace("e", '').replace("i", '').replace("o", '').replace("u", '')
+    return "".join([i for i in my_string if i not in "aeiou"])
