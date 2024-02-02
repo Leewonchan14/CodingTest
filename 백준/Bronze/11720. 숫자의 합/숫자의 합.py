@@ -1,0 +1,6 @@
+input()
+s = input()
+s = list(s)
+s = map(int, s)
+s = list(s)
+print(sum(s))
