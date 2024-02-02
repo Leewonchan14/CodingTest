@@ -6,7 +6,9 @@ while n != 1:
         print(count)
         n = n // count
         continue
-        
-    count+=1            
-            
+    count+=1
+    if count**2 > n:
+        print(n)
+        break
+
             
