@@ -1,4 +1,4 @@
-cache = {0: False, 1: False, 2: True}
+cache = {0 : False, 1 : False, 2: True}
 
 
 def is_prime(_n):
