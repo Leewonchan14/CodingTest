@@ -1,0 +1,1 @@
+print(sum([i * i % 10 for i in map(int, input().split())]) % 10)
