@@ -1,16 +1,8 @@
-n, _ = map(int, input().split())
+a, b, = map(int, input().split())
 
-li = []
+l1 = [list(map(int, input().split())) for _ in range(a)]
 
-for i in range(n):
-    li.append(list(map(int,input().split())))
+l2 = [list(map(int, input().split())) for _ in range(a)]
 
-for i in range(n):
-    _li = list(map(int,input().split()))
-    for j in range(len(li[0])):
-        li[i][j] += _li[j]
-    
-for i in li:
-    i = list(map(str, i))
-    print(" ".join(i))
-              
+for e in [[str(l1[i][j] + l2[i][j]) for j in range(len(l1[0]))] for i in range(len(l1))]:
+    print(" ".join(e))
