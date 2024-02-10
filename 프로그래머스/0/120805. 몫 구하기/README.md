@@ -1,6 +1,6 @@
 # [level 0] 몫 구하기 - 120805 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120805?language=python3) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120805) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 2월 4일 12:13:27
+2024년 2월 6일 10:14:44
 
 ### 문제 설명
 
