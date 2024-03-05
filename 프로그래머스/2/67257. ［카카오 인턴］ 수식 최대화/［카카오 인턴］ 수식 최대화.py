@@ -2,7 +2,9 @@ import itertools
 from collections import deque
 
 
-def calcul(a, b, op):
+def calcul(after_operation, op):
+    b = after_operation.pop()
+    a = after_operation.pop()
     if op == "+":
         return a + b
     elif op == "-":
@@ -12,18 +14,18 @@ def calcul(a, b, op):
 
 
 def solution(expression: str):
-    product = list(itertools.permutations(["*", "+", "-"], 3))
     stk = []
-
     answer_list = []
     # 모든 우선순위를 조사
-    for rank in product:
-
+    for rank in itertools.permutations(["*", "+", "-"], 3):
         num = ""
 
         after_operation = []
 
-        for index, s in enumerate(list(expression)):
+        que = deque(expression)
+
+        while len(que) != 0:
+            s = que.popleft()
             # 숫자라면 num에 추가 하고 다음 문자 확인
             if s not in rank:
                 num += s
@@ -33,35 +35,25 @@ def solution(expression: str):
             after_operation.append(int(num))
             num = ""
 
-            # stk 이 비어 있다면 연산자를 넣어주고 다음 확인
-            if len(stk) == 0:
-                # 넣어주고 다음 확인
-                stk.append(s)
-                continue
-
-            # 스택이 비어 있지 않다면 우선순위를 확인
-            # 우선 순위가 지금 나온게 더 높다면 그냥 넣어준다.
-            if rank.index(stk[-1]) > rank.index(s):
-                stk.append(s)
-                continue
-
-            # 지금 나온게 더 낮거나 같다면
+            # stk 이 비어 있지 않고 지금 나온게 더 낮거나 같다면
             while len(stk) != 0 and rank.index(stk[-1]) <= rank.index(s):
-                b = after_operation.pop()
-                a = after_operation.pop()
-                after_operation.append(calcul(a, b, stk.pop()))
+                after_operation.append(calcul(after_operation, stk.pop()))
 
+            # stk 이 비어 있거나
+            # 우선 순위가 지금 나온게 더 높다면 그냥 넣어준다.
             stk.append(s)
 
+        # 마지막 숫자 넣기
         after_operation.append(int(num))
 
+        # 모든 연산 하기
         while len(stk) != 0:
-            b = after_operation.pop()
-            a = after_operation.pop()
-            after_operation.append(calcul(a, b, stk.pop()))
+            after_operation.append(calcul(after_operation, stk.pop()))
 
+        # 최종 결과의 절댓값을 answer_list에 넣기    
         answer_list.append(abs(after_operation[0]))
 
+    # 모든값을 정렬후  
     answer_list.sort()
-
+    # 최댓값을 return
     return answer_list[-1]
