@@ -1,12 +1,9 @@
 def solution(n):
-    target = bin(n)[2:].count("1")
-    n += 1
-    bi = bin(n)[2:]
-    while bi.count("1") != target:
-        n += 1
-        bi = bin(n)[2:]
-    
-    return n
+    bin_num = bin(n)
+    zero_count = bin(n).count("1")
+    next_n = n + 1
+    while bin(next_n).count("1") != zero_count:
+        next_n += 1
+    return next_n 
         
-    
     
