@@ -1,4 +1,3 @@
 def solution(s):
-    s = s.split(" ")
-    _map = list(map(int, s))
-    return f"{min(_map)} {max(_map)}"
+    arr = list(map(int, s.split()))
+    return f"{min(arr)} {max(arr)}"
