@@ -1,17 +1,16 @@
 def solution(s):
     stk = []
-    for _s in s:
-        if len(stk) == 0:
-            stk.append(_s)
+    for i in s:
+        if not stk or i == "(":
+            stk.append(i)
             continue
         
-        if _s == ")":
-            if stk[-1] == "(":
-                stk.pop()
-                continue
-            else :
-                break
-                
-        stk.append(_s)
-    print(stk)
+        if stk[-1] == "(":
+            stk.pop()
+            continue
+        else:
+            return False
+        
     return len(stk) == 0
+        
+        
