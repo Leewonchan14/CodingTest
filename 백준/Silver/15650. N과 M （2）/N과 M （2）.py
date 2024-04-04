@@ -8,19 +8,18 @@ rs = []
 check = [False] * (n + 1)
 
 
-def back(n, k):
-    if k == 0:
+def back(n, k1):
+    if k1 == 0:
         print(" ".join(map(str, rs)))
+        return
 
     for i in range(1, n + 1):
-        if not check[i]:
-            for j in range(1, i + 1):
-                check[j] = True
+        if not check[i] and (True if not rs else i > rs[-1]):
+            check[i] = True
             rs.append(i)
-            back(n, k - 1)
+            back(n, k1 - 1)
             rs.pop()
-            for j in range(1, i + 1):
-                check[j] = False
+            check[i] = False
 
 
 back(n, k)
