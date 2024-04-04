@@ -14,12 +14,12 @@ def back(n, k1):
         return
 
     for i in range(1, n + 1):
-        if not check[i] and (True if not rs else i > rs[-1]):
-            check[i] = True
+        if not rs or i > rs[-1]:
+            # check[i] = True
             rs.append(i)
             back(n, k1 - 1)
             rs.pop()
-            check[i] = False
+            # check[i] = False
 
 
 back(n, k)
