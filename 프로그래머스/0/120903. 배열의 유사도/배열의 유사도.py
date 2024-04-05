@@ -1,7 +1,2 @@
 def solution(s1, s2):    
-    count = 0
-    
-    for i in s1:
-        count += s2.count(i)
-        
-    return count
+    return sum([s2.count(i) for i in s1])
