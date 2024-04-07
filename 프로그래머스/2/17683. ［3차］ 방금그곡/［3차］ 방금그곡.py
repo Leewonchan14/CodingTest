@@ -1,17 +1,13 @@
+keys = "C# D# F# G# A# E# B#".split()
+values = "c d f g a e b".split()
+mapper = dict(zip(keys, values))
+
+
 def to_music(music):
-    ls = []
-    index = 0
-    length = len(music)
-    while index < length:
-        if index + 1 < length and music[index + 1] == "#":
-            ls.append(music[index:index + 2])
-            index += 2
-            continue
-            
-        ls.append(music[index:index+1])
-        index += 1
-    return ls
-    
+    for k in mapper.keys():
+        music = music.replace(k, mapper[k])
+        
+    return music
 
 def to_minute(s):
     h, m = map(int,s.split(":"))
@@ -32,18 +28,14 @@ def solution(m, musicinfos):
         repeat = gap_minute // length
         div = gap_minute % length
         
-        melody = sum([music * repeat, music[:div]], [])
+        melody = music * repeat + music[:div]
         
-        for i in range(len(melody)):
-            if m[0] == melody[i]:
-                if i + len(m) <= len(melody) and all([melody[i + j] == m[j] for j in range(len(m))]):
-                    ls.append((-gap_minute, title))
-                    break
-            
+        if m in melody:
+            ls.append((-gap_minute, len(ls), title))
             
     ls.sort(key=lambda x: x[0])
     if ls:
-        return ls[0][1]
+        return ls[0][2]
     
     return "(None)"
             
