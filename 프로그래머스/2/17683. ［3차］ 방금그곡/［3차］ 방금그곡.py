@@ -1,30 +1,49 @@
+def to_music(music):
+    ls = []
+    index = 0
+    length = len(music)
+    while index < length:
+        if index + 1 < length and music[index + 1] == "#":
+            ls.append(music[index:index + 2])
+            index += 2
+            continue
+            
+        ls.append(music[index:index+1])
+        index += 1
+    return ls
+    
+
+def to_minute(s):
+    h, m = map(int,s.split(":"))
+    return h * 60 + m
+    
+
 def solution(m, musicinfos):
-    song = "",0
-    keys = "C# D# F# G# A# E#".split()
-    values = "c d f g a e".split()
-    none_list = dict(zip(keys,values))
+    m = to_music(m)
     
-    for k in keys:
-        m = m.replace(k, none_list[k])
+    ls = []
     
-    for i in musicinfos:
-        start, end, title, sound = i.split(",")
+    for m_ in musicinfos:
+        start, end, title, music = m_.split(",")
+        gap_minute = to_minute(end) - to_minute(start)
+        music = to_music(music)
+        length = len(music)
         
-        start = start.split(":")
-        end = end.split(":")
+        repeat = gap_minute // length
+        div = gap_minute % length
         
-        diff_h = int(end[0]) - int(start[0])
-        diff_m = int(end[1]) - int(start[1])
+        melody = sum([music * repeat, music[:div]], [])
         
-        diff = diff_h * 60 + diff_m
-        
-        for k in keys:
-            sound = sound.replace(k, none_list[k])
-        
-        sound = "".join([sound[x % len(sound)] for x in range(diff)])
-        
-        if m in sound and song[1] < diff :
-            song = title , diff
+        for i in range(len(melody)):
+            if m[0] == melody[i]:
+                if i + len(m) <= len(melody) and all([melody[i + j] == m[j] for j in range(len(m))]):
+                    ls.append((-gap_minute, title))
+                    break
+            
+            
+    ls.sort(key=lambda x: x[0])
+    if ls:
+        return ls[0][1]
     
-    return song[0] if len(song[0]) > 0 else '(None)'
-        
+    return "(None)"
+            
