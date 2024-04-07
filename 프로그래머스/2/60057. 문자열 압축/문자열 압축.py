@@ -1,42 +1,34 @@
+from collections import deque
+
+
 def solution(s):
-    length = len(s)
-    _min = length
-    # 2개로 압축하는거 부터
-    for i in range(1, length):
-        index = 0
+    rs = []
+    for i in range(1, len(s)):
+        spl = []
+        for j in range(0, len(s), i):
+            spl.append(s[j:j + i])
+
         count = 0
-        zip_str = ""
+        index = 0
 
-        # 압축을 위한 while
+        ls = []
+        temp = spl[index]
         while True:
-            pre_sub = s[index:index + i]
-
-            index += i
-
-            # index가 작을때만 잘라온다.
-            if index + i < length:
-                sub = s[index:index + i]
-            # 나머지 잘라온다.
-            else:
-                sub = s[index:]
-
-            count += 1
-
-            # 같으면 다음 연산
-            if pre_sub == sub:
+            if index < len(spl) and temp == spl[index]:
+                count += 1
+                index += 1
                 continue
 
-            count = "" if count <= 1 else str(count)
-
-            # 이전 문자열이랑 다르다면 지금까지 만든 zip에 추가한다.
-            zip_str += (count + pre_sub)
+            ls.append((str(count) if count != 1 else "") + temp)
             count = 0
-            
-            # 마지막이라면 break
-            if index >= length:
+
+            if index >= len(spl):
                 break
 
-        if _min > len(zip_str):
-            _min = len(zip_str)
+            temp = spl[index]
 
-    return _min
+        rs.append(len("".join(ls)))
+
+    rs.sort()
+    return rs[0] if rs else len(s)
+
