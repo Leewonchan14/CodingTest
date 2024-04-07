@@ -89,7 +89,4 @@ def solution(coin, cards):
 
         break
 
-        # n+1이 되는 두장을 낸다.
-
     return round_count
-
