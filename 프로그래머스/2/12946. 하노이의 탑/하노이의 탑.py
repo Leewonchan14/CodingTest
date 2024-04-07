@@ -1,14 +1,13 @@
-answer = []
-
-def move(start, end, other, n):
+def move(n, start, end, other, ls):
     if n == 1:
-        answer.append([start,end])
+        ls.append([start,end])
         return
     
-    move(start, other, end, n - 1)
-    move(start, end, other, 1)
-    move(other, end, start, n - 1)
+    move(n - 1, start, other, end, ls)
+    move(1, start, end, other, ls)
+    move(n - 1, other, end, start, ls)
 
 def solution(n):
-    move(1, 3, 2, n)
-    return answer
+    ls = []
+    move(n, 1, 3, 2, ls)
+    return ls
