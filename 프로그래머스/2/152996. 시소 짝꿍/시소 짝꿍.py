@@ -1,26 +1,30 @@
+import itertools
+
 def solution(weights):
-    
-    dic = {}
-    
-    for weight in weights:
-        dic[weight] = dic.get(weight, 0) + 1
+    count_sort = {}
+    for w in weights:
+        count_sort[w] = count_sort.get(w, 0) + 1
         
-    count = 0
-    keys = dic.keys()
-    for key in keys:
-        if key % 2 == 0 :
-            count += dic[key] * dic.get(key/2 * 3, 0)
-            count += dic[key] * dic.get(key/2 * 1, 0)
-        if key % 3 == 0 :
-            count += dic[key] * dic.get(key/3 * 4, 0)
-            count += dic[key] * dic.get(key/3 * 2 ,0) 
-        if key % 4 == 0 :
-            count += dic[key] * dic.get(key/4 * 3, 0)
+    total = 0
+    for weight, count in count_sort.items():
+        total += count * (count - 1)
         
-        count += dic[key] * dic.get(key * 2, 0)
-        count += dic[key] *( dic[key] - 1)
-        
-        
-    return count / 2
+        ls = []
     
+        ls.append(weight * 2)
+        if weight % 2 == 0:
+            _ls = [weight // 2 * 3, weight // 2]
+            ls = sum([ls, _ls], [])
+
+        if weight % 3 == 0:
+            _ls = [weight // 3 * 2, weight // 3 * 4]
+            ls = sum([ls, _ls], [])
+
+        if weight % 4 == 0:
+            ls.append(weight // 4 * 3)
+        
+        for w in ls:
+            if w in count_sort:
+                total += count * count_sort[w]
     
+    return total // 2
