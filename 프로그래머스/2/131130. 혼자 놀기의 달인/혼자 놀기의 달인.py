@@ -1,30 +1,28 @@
 def solution(cards):
-    isOpen =  [False for i in range(len(cards))]
-    open_box_count_list = []
+    is_open = [False] * (len(cards) + 1)
+    ls = [0]
+    for i in cards:
+        ls.append(i)
+        
+    cards = ls
+    
+    ls = []
+    
     count = 0
-    index = 0
-    while True:
-        # 이미 열려 있다면
-        if isOpen[index]:
-            # 지금까지 연 상자의 갯수를 append 하고 다음 index를 찾는다.
-            open_box_count_list.append(count)
+    
+    for i in range(1, len(cards)):
+        if not is_open[i]:
+            index = i
+            while not is_open[index]:
+                is_open[index] = True
+                count += 1
+                index = cards[index]
+            ls.append(count)
             count = 0
-            # isOpen에서 false가 나오면 된다.
-            for i in range(len(isOpen)):
-                if isOpen[i] == False:
-                    index = i
-                    break
-                    
-            # 만약 다 열려있다면 while문을 나온다.
-            if i == len(isOpen) - 1 and isOpen[i] != False:
-                break
             
-        # 상자를 연다
-        isOpen[index] = True
-        count += 1
-        
-        # 다음 index를 확인한다.    
-        index = cards[index] - 1;
-        
-    open_box_count_list.sort()
-    return open_box_count_list[-1] * open_box_count_list[-2] if len(open_box_count_list) >= 2 else 0
+            
+    if len(ls) <= 1:
+        return 0
+    
+    ls.sort()
+    return ls[-1] * ls[-2]
