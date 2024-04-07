@@ -1,36 +1,31 @@
 from collections import deque
-def bfs(maps):
-    rows = len(maps)
-    columns = len(maps[0])
-    visited = [[False] * columns for _ in range(rows)]
-    
+
+def bfs(y, x, maps):
     que = deque()
-    count = 1
-    que.append((0,0, count))
-    visited[0][0] = True
-    dy = [0,1,0,-1]
+    n = len(maps) - 1
+    m = len(maps[0]) - 1
+    que.append((y, x, 1))
+    dy = [0,-1,0,1]
     dx = [1,0,-1,0]
-    
-    flag = False
-    
+    visited = [[False] * (m + 1) for _ in range(n + 1)]
+    visited[y][x] = True
     while que:
-        y,x,distance = que.popleft()
-        count = distance
-        if y == rows - 1 and x == columns - 1:
-            flag = True
-            break
+        y, x, count = que.popleft()
+        
+        if y == n and x == m:
+            return count
+        
         for i in range(4):
             ny = y + dy[i]
             nx = x + dx[i]
-            if 0 <= ny < rows and 0 <= nx < columns:
-                if maps[ny][nx] == 1 and not visited[ny][nx]:
-                    visited[ny][nx] = True
-                    que.append((ny,nx,distance + 1))
-        
-    return count if flag else -1
-        
+            if 0<=ny<=n and 0<=nx<=m and maps[ny][nx] == 1 and not visited[ny][nx]:
+                visited[ny][nx] = True
+                que.append((ny,nx,count + 1))
+                
+    return -1
+    
+    
 
 def solution(maps):
-    return bfs(maps)
-    
+    return bfs(0, 0, maps)
     
