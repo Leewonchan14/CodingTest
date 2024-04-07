@@ -1,21 +1,26 @@
 import math
 def solution(progresses, speeds):
-    stk = []
-    total_days = 0
     index = 0
-    while index < len(progresses):
-        progresses[index] += speeds[index] * total_days
-        if len(stk) > 0 and progresses[index] >= 100:
-            stk[-1] += 1
+    ls = []
+    days = 0
+    while True:
+        days += math.ceil((100 - progresses[index]) / speeds[index])
+        count = 0
+        flag = False
+        while progresses[index] + speeds[index] * days >= 100:
             index += 1
+            count += 1
+            if index >= len(progresses):
+                flag = True
+                break
             continue
+        ls.append(count)
+        if flag:
+            break
+        progresses[index] += speeds[index] * days
+    
+    return ls
             
-        days = (100 - progresses[index]) / speeds[index]
-        days = math.ceil(days)
-        total_days += days
         
-        stk.append(1)
         
-        index += 1
-    return stk
         
