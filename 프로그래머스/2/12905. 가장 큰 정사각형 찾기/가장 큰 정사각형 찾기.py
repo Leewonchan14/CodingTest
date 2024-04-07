@@ -3,18 +3,15 @@ def solution(board):
     dc = [0, -1, -1]
     rows = len(board)
     columns = len(board[0])
-    maxv = 0
-    for r in range(rows):
-        for c in range(columns):
+    maxv = max(0, board[0][0])
+    for r in range(1, rows):
+        for c in range(1, columns):
             if board[r][c] == 1:
-                ls = []
-                for i in range(3):
-                    if 0<= (r + dr[i]) < rows and 0 <= (c + dc[i]) < columns:
-                        ls.append(board[r + dr[i]][c + dc[i]])
-                    else:
-                        ls.append(0)
-                board[r][c] = min(ls) + 1
-                maxv = max(maxv , board[r][c])
+                    
+                minv = min([board[r + dr[i]][c + dc[i]] for i in range(3)])
+                board[r][c] = minv + 1
+
+            maxv = max(board[r][c],maxv)
                 
     return maxv ** 2
                 
