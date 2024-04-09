@@ -1,35 +1,29 @@
+columns = {}
+dig_x = {}
+dig_y = {}
+cnt = [0]
+    
+def track(num, M):
+    if num == M:
+        cnt[0] += 1
+        return
+    
+    r = num
+    
+    for c in range(M):
+        if c not in columns and r + c not in dig_x and r - c not in dig_y:
+            columns[c] = 0
+            dig_x[r+c] = 0
+            dig_y[r-c] = 0
+            track(num + 1, M)
+            columns.pop(c)
+            dig_x.pop(r+c)
+            dig_y.pop(r-c)
+            
+
 def solution(n):
-    rows = {}
-    columns = {}
-    ry = {}
-    rd = {}
-
-    ls = []
-    cnt = [0]
-
-    def track(num):
-        if num == n:
-            cnt[0] += 1
-            return
-
-        r = num
-
-        for c in range(0, n):
-            if c not in columns:
-                if r - c not in ry and r + c not in rd:
-                    rows[r] = 0
-                    columns[c] = 0
-                    ry[r - c] = 0
-                    rd[r + c] = 0
-                    ls.append((r, c))
-                    track(num + 1)
-                    ls.pop()
-                    rows.pop(r)
-                    columns.pop(c)
-                    ry.pop(r - c)
-                    rd.pop(r + c)
-
-
-    track(0)
-
+    track(0, n)
+    
     return cnt[0]
+    
+    
