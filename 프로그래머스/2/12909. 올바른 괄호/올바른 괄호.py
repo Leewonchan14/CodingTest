@@ -4,13 +4,12 @@ def solution(s):
         if not stk or i == "(":
             stk.append(i)
             continue
-        
-        if stk[-1] == "(":
+            
+        if stk and stk[-1] == "(" and i == ")":
             stk.pop()
-            continue
-        else:
-            return False
-        
+            
     return len(stk) == 0
+            
+            
         
         
