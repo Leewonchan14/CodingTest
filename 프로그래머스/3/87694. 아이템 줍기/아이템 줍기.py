@@ -1,44 +1,59 @@
 from collections import deque
 
 
-def bfs(visited, rectangle, start, end, maxv):
-    y, x = start
-    que = deque()
-    que.append((y, x, 0))
-
-    dy = [0, 1, 0, -1]
-    dx = [-1, 0, 1, 0]
-
-    while que:
-        y, x, count = que.popleft()
-        if end[0] == y and end[1] == x:
-            return count
-        for i in range(4):
-            ny = y + dy[i]
-            nx = x + dx[i]
-            if (0 <= ny <= maxv and 0 <= nx <= maxv and not visited[ny][nx] and
-                    ok_go(rectangle, (ny, nx)) and
-                    ok_go(rectangle, ((y + ny) / 2, (x + nx) / 2))):
-                visited[ny][nx] = True
-                que.append((ny, nx, count + 1))
-
-
-def ok_go(rectangle, target):
-    y, x = target
-    for ld_x, ld_y, ry_x, ry_y in rectangle:
-        if ((x == ld_x or x == ry_x) and ld_y <= y <= ry_y) or ((y == ld_y or y == ry_y) and ld_x <= x <= ry_x):
-            if not any((y1 < y < y2 and x1 < x < x2) for x1, y1, x2, y2 in rectangle):
-                return True
+def is_in(y, x, rectangle):
+    for lx, ly, rx, ry in rectangle:
+        if ly < y < ry and lx < x < rx:
+            return True
 
     return False
 
 
+def is_side(y, x, rectangle):
+    for lx, ly, rx, ry in rectangle:
+        if ((x == lx or x == rx) and ly <= y <= ry) or ((y == ly or y == ry) and lx <= x <= rx):
+            return True
+
+    return False
+
+
+dy = [0, 1, 0, -1]
+dx = [-1, 0, 1, 0]
+
+
+def bfs(x, y, rectangle, target, visited):
+    que = deque()
+    que.append((y, x, 0))
+    visited[y][x] = True
+    n = len(visited) - 1
+
+    while que:
+        y, x, cnt = que.popleft()
+        print(y, x, cnt)
+        if y == target[0] and x == target[1]:
+            return cnt
+
+        if y == 5 and cnt == 3:
+            print(y)
+
+        for i in range(4):
+            ny = y + dy[i]
+            nx = x + dx[i]
+            if 0 <= nx <= n and 0 <= ny <= n and not visited[ny][nx]:
+                if (
+                        is_side(ny, nx, rectangle) and is_side((y + ny) / 2, (x + nx) / 2, rectangle) and
+                        not is_in(ny, nx, rectangle) and not is_in((y + ny) / 2, (x + nx) / 2, rectangle)
+                ):
+                    visited[ny][nx] = True
+                    que.append((ny, nx, cnt + 1))
+
+
 def solution(rectangle, characterX, characterY, itemX, itemY):
-    start = characterY, characterX
-    end = itemY, itemX
     maxv = 0
     for i in rectangle:
-        maxv = max(max(i), maxv)
+        maxv = max(maxv, max(i))
 
     visited = [[False] * (maxv + 1) for _ in range(maxv + 1)]
-    return bfs(visited, rectangle, start, end, maxv)
+
+    return bfs(characterX, characterY, rectangle, (itemY, itemX), visited)
+
