@@ -1,4 +1,5 @@
 def solution(numbers):
-    str_ls = list(map(str, numbers))
-    str_ls.sort(reverse=True, key=lambda x: x*4)
-    return str(int("".join(str_ls)))
+    numbers = list(map(lambda x : ((str(x) * 4)[:4],str(x)), numbers))
+    numbers.sort(reverse=True)
+    join = "".join(map(lambda x:x[1], numbers))
+    return "0" if join[0] == "0" else join
