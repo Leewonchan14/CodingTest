@@ -1,65 +1,42 @@
 from collections import deque
-
+def bfs(y,x,visited, land):
+    que = deque()
+    visited[y][x] = True
+    count = 0
+    
+    que.append((y,x,count))
+    
+    dy = [0,-1,0,1]
+    dx = [1,0,-1,0]
+    
+    c_l = [500, -1]
+    
+    while que:
+        y,x,cnt = que.popleft()
+        c_l[0] = min(x, c_l[0])
+        c_l[1] = max(x, c_l[1])
+        count += 1
+        for i in range(4):
+            ny = y + dy[i]
+            nx = x + dx[i]
+            if 0 <= ny < len(land) and 0 <= nx < len(land[0]):
+                if land[ny][nx] == 1 and not visited[ny][nx]:
+                    visited[ny][nx] = True
+                    que.append((ny,nx, cnt + 1))
+    
+    return count, c_l
 
 def solution(land):
-    n = len(land)
-    m = len(land[0])
-
-    isGo = [[False for _ in range(m)] for _ in range(n)]
-    oils = {0: 0}
-
-    que = deque()
-
-    direction = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-
-    for row in range(n):
-        for col in range(m):
-            # 갔다면 continue
-            if isGo[row][col]:
-                continue
-
-            # 빈땅이면 continue
-            if land[row][col] == 0:
-                continue
-
-            # 안가고 석유라면 Enque
-            count = 0
-            index = len(oils)
-
-            isGo[row][col] = True
-            land[row][col] = index
-            que.append((row, col))
-
-            while len(que) > 0:
-                _row, _col = que.popleft()
-                count += 1
-
-                for dx, dy in direction:
-                    n_row = _row + dx
-                    n_col = _col + dy
-
-                    # 땅을 넘으면
-                    if n_row >= n or n_row < 0 or n_col >= m or n_col < 0:
-                        continue
-
-                    # 빈땅이면 continue
-                    if land[n_row][n_col] == 0:
-                        continue
-
-                    # 안가면 Enque
-                    if not isGo[n_row][n_col]:
-                        land[n_row][n_col] = index
-                        isGo[n_row][n_col] = True
-                        que.append((n_row, n_col))
-
-            oils[index] = count
-
-    result = []
-
-    for col in range(m):
-        total = set()
-        for row in range(n):
-            total.add(land[row][col])
-        result.append(sum(map(lambda x: oils[x], total)))
-
-    return max(result)
+    ls = []
+    visited = [[False] * len(land[0]) for _ in range(len(land))]
+    for c in range(len(land[0])):
+        for r in range(len(land)):
+            if land[r][c] == 1 and not visited[r][c]:
+                ls.append(bfs(r,c,visited, land))
+        
+    mm = [0] * len(land[0])
+    for cnt, [start, end] in ls:
+        for i in range(start, end + 1):
+            mm[i] += cnt
+    
+    return max(mm)
