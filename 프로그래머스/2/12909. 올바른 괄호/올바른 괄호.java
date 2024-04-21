@@ -1,29 +1,22 @@
-import java.util.stream.*;
 import java.util.*;
 class Solution {
-    boolean solution(String s1) {
-        
-        char[] s = s1.toCharArray();
-        
-        Stack<Integer> stack = new Stack<>();
-        
-        for(int i = 0; i < s.length; i++){
-            // if open add
-            if(s[i] == '('){
-                stack.add((int)s[i]);
+    boolean solution(String str) {
+        LinkedList<Integer> st = new LinkedList();
+        for(int s : str.chars().toArray()){
+            if(st.isEmpty() && s ==')' ) return false;
+            
+            if (st.isEmpty() || s == '('){
+                st.addLast(s);
+                continue;
             }
             
-            // if close check
-            if(s[i] == ')'){
-                if(stack.isEmpty())
-                    return false;
-                
-                if (stack.pop() != '('){
-                    return false;
-                }
+            if(st.peekLast() == '('){
+                st.pollLast();
+            } else{
+                return false;
             }
         }
         
-        return stack.isEmpty();
+        return st.isEmpty();
     }
 }
