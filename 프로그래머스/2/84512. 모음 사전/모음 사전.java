@@ -1,31 +1,34 @@
 class Solution {
-    String[] arr = "A E I O U".split(" ");
-    int count = 0;
+    String[] str = "A E I O U".split(" ");
+    int cnt = 0;
     String target;
     public int solution(String word) {
         target = word;
         
-        dfs("");
+        track("");
         
-        return count;
+        
+        return cnt;
     }
     
-    public int dfs(String input){
-        if(input.equals(target)){
-            return 1;
+    public boolean track(String input){
+        if (input.equals(target)) {
+            return true;
+        }
+            
+        
+        if (input.length() == 5) {
+            return false;
         }
         
-        if(input.length() == 5){
-            return 0;
-        }
-        
-        for(String str : arr){
-            count++;
-            if(dfs(input+str) == 1){
-                return 1;
+        for(String s: str){
+            boolean good = track(input + s);
+            cnt += 1;
+            if(good){
+              return true;  
             }
         }
         
-        return 0;
+        return false;
     }
 }
