@@ -1,31 +1,23 @@
 import java.util.stream.*;
 import java.util.*;
+import java.util.Map.*;
 class Solution {
     public int solution(int k, int[] tangerine) {
-        
-        Map<Integer, Integer> map = new HashMap<>();
-        
-        for(int i : tangerine){
-            if(!map.containsKey(i)){
-                map.put(i,1);
-                continue;
-            }
-            map.put(i,map.get(i) + 1);
+        Map<Integer, Integer> map = new HashMap();
+        for (int i : tangerine){
+            map.put(i, map.getOrDefault(i, 0) + 1);
         }
         
-        int[] arr =map.values().stream().sorted().mapToInt(Integer::intValue).toArray();
+        List<Entry<Integer,Integer>> entry = map.entrySet()
+            .stream().sorted((a,b)->b.getValue() - a.getValue())
+            .collect(Collectors.toList());
         
-        int lastIndex = arr.length - 1;
-        
-        int count = 0;
-        while(k > 0){
-            count++;
-            k -= arr[lastIndex];
-            lastIndex--;
+        int cnt = 0;
+        for(Entry<Integer,Integer> e : entry){
+            cnt += 1;
+            k -= e.getValue();
+            if (k <= 0) break;
         }
-        
-        return count;
-        
-        
+        return cnt;
     }
 }
