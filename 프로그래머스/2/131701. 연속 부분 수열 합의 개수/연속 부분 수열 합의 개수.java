@@ -1,27 +1,22 @@
-import java.util.stream.*;
 import java.util.*;
 class Solution {
-    int[] arr;
-    
-    int[][] dp;
+    Set<Integer> set = new HashSet();
     public int solution(int[] elements) {
-        arr = elements;
-        dp = new int[1001][1001];
-        // arr = new int[]{1,2,3,4};
-        Set<Integer> set = new HashSet<>();
-        for(int i = 1; i <= arr.length; i++){
-            for(int j = 0; j < arr.length; j++){
-                set.add(getInt(j, i));
+        for(int size = 1; size < elements.length; size++){
+            for(int i = 0; i < elements.length; i++){
+                int sum = 0;
+                for(int j = i; j < i + size; j++){
+                    sum += elements[j % elements.length];
+                }
+                set.add(sum);
             }
         }
         
+        int sumv = 0;
+        for(int i = 0; i < elements.length; i++){
+            sumv += elements[i];
+        }
+        set.add(sumv);
         return set.size();
-    }
-    
-    public int getInt(int n, int len){
-        dp[n][len] = dp[n][len - 1]
-            + arr[(n + len) % arr.length];
-        
-        return dp[n][len];
     }
 }
