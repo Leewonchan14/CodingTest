@@ -1,10 +1,10 @@
 # [level 0] 배열의 길이에 따라 다른 연산하기 - 181854 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181854?language=python3) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181854?language=java) 
 
 ### 성능 요약
 
-메모리: 10.3 MB, 시간: 0.01 ms
+메모리: 77.5 MB, 시간: 2.09 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 2월 4일 14:59:25
+2024년 04월 21일 13:36:47
 
 ### 문제 설명
 
