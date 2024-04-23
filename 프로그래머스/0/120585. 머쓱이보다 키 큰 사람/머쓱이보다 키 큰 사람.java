@@ -1,9 +1,8 @@
+import java.util.*;
+import java.util.stream.*;
+
 class Solution {
     public int solution(int[] array, int height) {
-        int cnt = 0;
-        for(int i : array){
-            if (i > height) cnt++;
-        }
-        return cnt;
+        return (int)Arrays.stream(array).filter(i -> i > height).count();
     }
 }
