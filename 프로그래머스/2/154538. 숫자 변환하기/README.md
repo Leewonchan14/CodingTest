@@ -1,10 +1,10 @@
 # [level 2] 숫자 변환하기 - 154538 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/154538) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/154538?language=java) 
 
 ### 성능 요약
 
-메모리: 10.5 MB, 시간: 1.17 ms
+메모리: 73.8 MB, 시간: 1.82 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 04월 27일 15:52:21
+2024년 04월 27일 16:02:23
 
 ### 문제 설명
 
