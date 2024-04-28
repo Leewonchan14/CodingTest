@@ -1,15 +1,4 @@
-def dfs(o, n, k, ls, rs):
-    if n == k:
-        nl = [o[i] for i in ls]
-        nl.sort()
-        rs.append("".join(nl))
-        return
-
-    for i in range(len(o)):
-        if not ls or ls[-1] < i:
-            ls.append(i)
-            dfs(o, n + 1, k, ls, rs)
-            ls.pop()
+import itertools
 
 
 def include(a, b):
@@ -20,31 +9,26 @@ def solution(orders, course):
     result = []
 
     for size in course:
-        size_set = set()
-        for o in orders:
-            rs = []
-            dfs(o, 0, size, [], rs)
-            for r in rs:
-                size_set.add(r)
-
         dic = {}
-        for r in size_set:
-            cnt = 0
-            for o in orders:
-                if include(r, o):
-                    cnt += 1
-            dic[r] = cnt
+        for o in orders:
+            rs = itertools.combinations(sorted(o), size)
+            for r in rs:
+                key = "".join(r)
+                dic[key] = dic.get(key, 0) + 1
 
         if not dic:
             continue
-        # print(dic)
+
         items = dic.items()
         maxv = max(dic.values())
         maxv = 2 if maxv < 2 else maxv
 
         items = [k for k, v in items if v == maxv]
         for it in items:
-            result.append("".join(sorted(it)))
+            result.append(it)
 
     result.sort()
     return result
+
+
+# print(solution(["ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"], [2, 3, 4]))
