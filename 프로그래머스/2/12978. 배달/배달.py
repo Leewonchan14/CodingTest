@@ -1,34 +1,31 @@
-import heapq
+from queue import PriorityQueue
 
-def dijkstra(start, relation, k):
-    distances = [float('inf')] * (len(relation) + 1)
-    distances[start] = 0
-    queue = []
-    heapq.heappush(queue, (0, start))
+def daikstra(N, dic, K):
+    que = PriorityQueue();
     
-    while queue:
-        current_distance, current_node = heapq.heappop(queue)
+    weights = [float('inf')] * (N + 1)
+    weights[1] = 0
+    
+    que.put((0, 1))
+    while que.queue:
+        weight, start = que.get()
         
-        if distances[current_node] < current_distance:
-            continue
-            
-        for adj_distance, adj_node in relation[current_node]:
-            distance = current_distance + adj_distance
-            
-            if distance < distances[adj_node]:
-                distances[adj_node] = distance
-                heapq.heappush(queue, (distance, adj_node))
+        for n_weight, n in dic.get(start, []):
+            if weight + n_weight < weights[n]:
+                weights[n] = weight + n_weight
+                que.put((weight + n_weight, n))
+
     
-    return len([d for d in distances if d <= k])
+    return len([w for w in weights if w <= K])
+    
 
 def solution(N, road, K):
-    relation = {i: [] for i in range(1, N + 1)}
-    
-    for a, b, weight in road:
-        relation[a].append((weight, b))
-        relation[b].append((weight, a))
-    
-    return dijkstra(1, relation, K)
-
-# 테스트
-# print(solution(6, [[1, 2, 1], [1, 3, 2], [2, 3, 2], [3, 4, 3
+    dic = {}
+    for a,b,c in road:
+        dic[a] = dic.get(a, [])
+        dic[a].append((c, b))
+        
+        dic[b] = dic.get(b, [])
+        dic[b].append((c, a))
+        
+    return daikstra(N, dic, K)
