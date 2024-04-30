@@ -5,10 +5,6 @@ class Solution {
     public class Node{
         boolean isVisited = false;
         List<Node> nodes = new ArrayList<>();
-        
-        public String toString(){
-            return "" + isVisited;
-        }
     }
     
     public int solution(int n, int[][] computers) {
@@ -28,6 +24,7 @@ class Solution {
         LinkedList<Node> que = new LinkedList<>();
         
         int cnt = 0;
+        nodes[0].isVisited = true;
         
         for(Node node : nodes){
             if (node.isVisited) continue;
@@ -44,7 +41,7 @@ class Solution {
             }
         }
         
-        return cnt - 1;
+        return cnt;
         
         
     }
