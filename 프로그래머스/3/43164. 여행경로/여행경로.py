@@ -1,29 +1,37 @@
-rs = []
-ls = ["ICN"]
-go = {}
-cnt = [0]
+import numpy as np
 
-def track(num):
-    if num == cnt[0]:
-        rs.append(ls[:])
+const = [0]
+
+result = []
+
+ls = ["ICN"]
+
+
+def recursive(dic):
+    if const[0] == len(ls) - 1:
+        result.append(ls[:])
         return
     
-    for g in go.get(ls[-1],[]):
-        if not g[1]:
-            g[1] = True
-            ls.append(g[0])
-            track(num + 1)
-            ls.pop()
-            g[1] = False
+    for b in dic[ls[-1]]:
+        if b[1]:
+            continue
+        b[1] = True
+        ls.append(b[0])
+        recursive(dic)
+        ls.pop()
+        b[1] = False
+    
+        
+    
 
 def solution(tickets):
+    dic = {}
+    const[0] = len(tickets)
     for a,b in tickets:
-        cnt[0] += 1
-        go[a] = go.get(a, [])
-        go[a].append([b, False])
+        dic[a] = dic.get(a, [])
+        dic[b] = dic.get(b, [])
+        dic[a].append([b, False])
         
-    track(0)
-    
-    rs.sort(key=lambda x : "".join(x))
-    
-    return rs[0]
+    recursive(dic)
+    result.sort(key=lambda x: "".join(x))
+    return result[0] if result else []
