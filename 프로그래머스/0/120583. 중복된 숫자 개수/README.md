@@ -1,10 +1,10 @@
 # [level 0] 중복된 숫자 개수 - 120583 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120583?language=java) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120583) 
 
 ### 성능 요약
 
-메모리: 78.8 MB, 시간: 0.02 ms
+메모리: 80.6 MB, 시간: 1.38 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 04월 21일 12:57:54
+2024년 04월 30일 13:24:30
 
 ### 문제 설명
 

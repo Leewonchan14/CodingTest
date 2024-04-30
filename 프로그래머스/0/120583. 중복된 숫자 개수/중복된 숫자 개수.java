@@ -1,9 +1,7 @@
+import java.util.stream.*;
+import java.util.*;
 class Solution {
     public int solution(int[] array, int n) {
-        int cnt = 0;
-        for (int i : array){
-            if (i == n) cnt++;
-        }
-        return cnt;
+        return (int)Arrays.stream(array).filter(i->i==n).count();
     }
 }
