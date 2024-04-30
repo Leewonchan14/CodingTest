@@ -11,25 +11,29 @@ def bfs(i, visited, dic):
                 que.append(ni)
         
 
+def dfs(dic, point, visited):
+    for n in dic[point]:
+        if visited[n]:
+            continue
+        visited[n] = True
+        dfs(dic, n, visited)
+        
+        
 def solution(n, computers):
-    dic = {}
+    dic = [[] for _ in range(n)]
     for a in range(len(computers)):
         for b in range(len(computers[0])):
-            if a == b or computers[a][b] == 0:
+            if computers[a][b] == 0:
                 continue
-            dic[a] = dic.get(a, [])
             dic[a].append(b)
-            dic[b] = dic.get(b, [])
             dic[b].append(a)
-    print(dic)
         
-    
     visited = [False] * n
     
     count = 0
     for i in range(n):
         if not visited[i]:
-            bfs(i, visited, dic)
+            dfs(dic, i, visited)
             count += 1
             
     return count
