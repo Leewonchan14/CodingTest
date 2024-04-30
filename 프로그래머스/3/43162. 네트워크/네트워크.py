@@ -12,10 +12,10 @@ def bfs(i, visited, dic):
         
 
 def dfs(dic, point, visited):
+    visited[point] = True
     for n in dic[point]:
         if visited[n]:
             continue
-        visited[n] = True
         dfs(dic, n, visited)
         
         
