@@ -1,12 +1,8 @@
 def solve(sequence):
-    length = len(sequence)
-    dp = [0 for _ in range(length)]
-    dp[0] = sequence[0]
-    for i in range(1, length):
-        dp[i] = max(dp[i - 1] + sequence[i], sequence[i])
-        
-    dp.sort()
-    return dp[-1]
+    for i in range(1, len(sequence)):
+        sequence[i] = max(sequence[i - 1] + sequence[i], sequence[i])
+    
+    return max(sequence)
     
 
 def solution(sequence):
