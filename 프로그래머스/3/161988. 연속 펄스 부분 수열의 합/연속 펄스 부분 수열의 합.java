@@ -13,10 +13,8 @@ class Solution {
             dp1[i] = Math.max(dp1[i - 1] + dp1[i], dp1[i]);
             dp2[i] = Math.max(dp2[i - 1] + dp2[i], dp2[i]);
         }
-        
-        Arrays.sort(dp1);
-        Arrays.sort(dp2);
-        
-        return Math.max(dp1[dp1.length - 1], dp2[dp2.length - 1]);
+        long a = Arrays.stream(dp1).max().orElse(0);
+        long b = Arrays.stream(dp2).max().orElse(0);
+        return Math.max(a,b);
     }
 }
