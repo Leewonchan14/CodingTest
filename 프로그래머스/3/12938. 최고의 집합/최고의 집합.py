@@ -1,11 +1,10 @@
 def solution(n, s):
-    if s // n == 0:
+    if n > s:
         return [-1]
     
-    length = s // n
+    result = [s // n for _ in range(n)]
+    div = s % n
+    for i in range(n - div, n):
+        result[i] += 1
+    return result
     
-    ls = [length] * n
-    for i in range(-1, -(s % n) - 1, - 1):
-        ls[i] += 1
-    
-    return ls
