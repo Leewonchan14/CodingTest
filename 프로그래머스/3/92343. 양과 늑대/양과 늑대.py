@@ -1,28 +1,34 @@
+from collections import deque
+
+
 def solution(info, edges):
-    from collections import defaultdict, deque
+    child = {i: [] for i in range(len(info))}
 
-    def bfs(info, graph):
-        max_sheep = 0
-        queue = deque([(0, 1, 0, [0])])
+    for a, b in edges:
+        child[a].append(b)
 
-        while queue:
-            node, sheep, wolf, route = queue.popleft()
-            max_sheep = max(max_sheep, sheep)
+    def bfs():
+        max_sheep_cnt = 0
+        que = deque()
+        que.append((1, 0, {0}))
 
-            for next_node in route:
-                for child in graph[next_node]:
-                    if child not in route:
-                        next_sheep = sheep + (info[child] == 0)
-                        next_wolf = wolf + (info[child] == 1)
+        while que:
+            sheep_cnt, wolf_cnt, nodes = que.popleft()
 
-                        if next_wolf < next_sheep:
-                            queue.append((child, next_sheep, next_wolf, route + [child]))
+            if sheep_cnt <= wolf_cnt:
+                continue
 
-        return max_sheep
+            max_sheep_cnt = max(max_sheep_cnt, sheep_cnt)
+            for node in nodes:
+                for next_node in child[node]:
+                    if next_node in nodes:
+                        continue
 
-    graph = defaultdict(list)
-    for parent, child in edges:
-        graph[parent].append(child)
+                    if info[next_node] == 1:
+                        que.append((sheep_cnt, wolf_cnt + 1, nodes | {next_node}))
+                    else:
+                        que.append((sheep_cnt + 1, wolf_cnt, nodes | {next_node}))
 
-    return bfs(info, graph)
+        return max_sheep_cnt
 
+    return bfs()
