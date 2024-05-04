@@ -1,100 +1,73 @@
-import java.util.*;
 import java.util.stream.*;
+import java.util.*;
 
 class Solution {
-    class Point{
-        public int cost;
-        public int y;
-        public int x;
-        public int ny;
-        public int nx;
-        public int preY;
-        public int preX;
-        
-        public Point(int cost, int y, int x, int ny, int nx, int preY, int preX){
-            this.cost = cost;
-            this.y = y;
-            this.x = x;
-            this.ny = ny;
-            this.nx = nx;
-            this.preY = preY;
-            this.preX = preX;
-        }
-        
-        public String toString(){
-            return "cost : " + cost;
-        }
-    }
+    public int[] dy = new int[] {0, -1, 0, 1};
+    public int[] dx = new int[] {-1, 0, 1, 0};
+    public int[][][] cost;
     
-    
-    PriorityQueue<Point> que = new PriorityQueue<>((Point p1, Point p2)->p1.cost - p2.cost);
-    public int solution(int[][] board) {
-        return bfs(board);
-    }
-    
-    public boolean isCorner(int y, int x, int ny, int nx, int preY, int preX){
-        if (y == 0 && x == 0){
+    public boolean isCorner(int preY, int preX, int y, int x, int ny, int nx){
+        if(preY == -1 && preX == -1){
             return false;
         }
-
-        return !((y - preY == ny - y) && (x - preX == nx - x));
+        
+        if ((preY == y && y == ny) || (preX == x && x == nx)){
+            return false;
+        }
+        
+        return true;
     }
     
     
     public int bfs(int[][] board){
-        int length = board.length;
-        int[][][] visited = new int[length][length][4];
+        LinkedList<int[]> que = new LinkedList<>();
         
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < length; j++) {
-                for (int k = 0; k < 4; k++) {
-                    visited[i][j][k] = 1000000000;
-                }
-            }
-        }
-        
-        int[] dy = new int[]{0, -1, 0, 1};
-        int[] dx = new int[]{-1, 0, 1, 0};
-        
-        que.add(new Point(0,0,0,0,0,0,0));
-        for(int i = 0; i < 4; i++){
-            visited[0][0][i] = 0;
-        }
+        que.add(new int[]{-1,-1, 0, 0, 0});
         
         while(!que.isEmpty()){
-            Point p = que.poll();
+            int[] ints = que.pollFirst();
             
             for(int i = 0; i < 4; i++){
-                int ny = p.y + dy[i];
-                int nx = p.x + dx[i];
+                int ny = ints[2] + dy[i];
+                int nx = ints[3] + dx[i];
+                
+                if (ny < 0 || ny >= cost.length || nx < 0 || nx >= cost.length) continue;
+                
+                if(ints[0] == ny && ints[1] == nx) continue;
+                
+                if (board[ny][nx] == 1) continue;
                     
-                if (0 <= ny && ny < length && 0 <= nx && nx < length){
-                    if( board[ny][nx] == 1 ){
-                        continue;
-                    }
-                    
-                    int n_cost = p.cost + 100;
-                    
-                    Point newPoint = new Point(0, ny, nx, ny, nx, p.y, p.x);
-                    if (isCorner(p.y, p.x, ny, nx, p.preY, p.preX)){
-                        n_cost += 500;
-                    }
-                    
-                    if(n_cost > visited[ny][nx][i]){
-                        continue;
-                    }
-                    
-                    newPoint.cost = n_cost;
-                    
-                    visited[ny][nx][i] = n_cost;
-                    que.add(newPoint);
+                int sum = ints[4] + 100;
+                if (isCorner(ints[0], ints[1], ints[2], ints[3], ny, nx)){
+                    sum += 500;
                 }
                 
-            }
+                if (sum >= cost[ny][nx][i]) continue;
                 
+                cost[ny][nx][i] = sum;
+                que.addLast(new int[]{ints[2], ints[3], ny, nx, sum});
+            }
         }
-        int[] last = visited[length - 1][length - 1];
-        return Math.min(Math.min(last[2], last[3]), Math.min(last[0], last[1]));
         
+        return (int)Arrays.stream(cost[cost.length - 1][cost.length - 1]).min().orElse(0);
+    }
+    
+    
+    public int solution(int[][] board) {
+        cost = new int[board.length][board.length][4];
+        
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board.length; j++){
+                for(int k = 0; k < 4; k ++){
+                    cost[i][j][k] = 2000000000;
+                }
+            }
+        }
+        
+        for(int i = 0; i < 4; i++){
+            cost[0][0][i] = 0;
+        }
+        
+        return bfs(board);
     }
 }
