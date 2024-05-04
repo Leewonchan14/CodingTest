@@ -1,57 +1,60 @@
+dy = [0, -1, 0, 1]
+dx = [-1, 0, 1, 0]
+
 from collections import deque
-from queue import PriorityQueue
-
-ls = [0, 0]
 
 
-def is_corner(pre, start, end):
-    pre_y, pre_x = pre
-    start_y, start_x = start
-    end_y, end_x = end
-
-    if start_y == 0 and start_x == 0:
+def is_corner(pre_y, pre_x, y, x, ny, nx):
+    if pre_y == -1 or pre_x == -1:
         return False
 
-    return not (start_y - pre_y == end_y - start_y and start_x - pre_x == end_x - start_x)
+    if (pre_y == y == ny) or (pre_x == x == nx):
+        return False
+    else:
+        return True
 
 
-def bfs(board):
-    length = len(board)
-    visited = [[[float('inf')] * 4 for _ in range(length)] for _ in range(length)]
-    que = PriorityQueue()
-    dy = [0, -1, 0, 1]
-    dx = [1, 0, -1, 0]
-    que.put((0, 0, 0, 0, 0))
-    for i in range(4):
-        visited[0][0][i] = 0
-
-    while not que.empty():
-        bill, y, x, pre_y, pre_x = que.get()
-
+def bfs(cost, board, n):
+    que = deque()
+    cost[0][0] = [100] * 4
+    que.append((-1, -1, 0, 0, 0))
+    while que:
+        pre_y, pre_x, y, x, now_cost = que.popleft()
         for i in range(4):
             ny = y + dy[i]
             nx = x + dx[i]
 
-            if 0 <= ny < length and 0 <= nx < length:
-                if board[ny][nx] == 1:
-                    continue
+            if 0 <= ny < n and 0 <= nx < n:
+                pass
+            else:
+                continue
 
-                n_bill = bill + 100
-                if is_corner((pre_y, pre_x), (y, x), (ny, nx)):
-                    n_bill += 500
+            if pre_y == ny and pre_x == nx:
+                continue
 
-                if n_bill > visited[ny][nx][i]:
-                    continue
+            if board[ny][nx] == 1:
+                continue
 
-                visited[ny][nx][i] = n_bill
-                que.put((n_bill, ny, nx, y, x))
+            sum_cost = now_cost
+            if is_corner(pre_y, pre_x, y, x, ny, nx):
+                sum_cost += 600
+            else:
+                sum_cost += 100
 
-    return min(visited[length - 1][length - 1])
+            if sum_cost >= cost[ny][nx][i]:
+                continue
+
+            cost[ny][nx][i] = sum_cost
+            que.append((y, x, ny, nx, sum_cost))
+
+    return min(cost[-1][-1])
 
 
 def solution(board):
-    return bfs(board)
+    n = len(board)
+    cost = [[[float('inf')] * 4 for _ in range(n)] for _ in range(n)]
+    return bfs(cost, board, n)
 
 
-# print(solution([[0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 0], [0, 0, 1, 0, 0, 0], [1, 0, 0, 1, 0, 1], [0, 1, 0, 0, 0, 1],
-#                 [0, 0, 0, 0, 0, 0]]))
+# print(solution([[0, 0, 0], [0, 0, 0], [0, 0, 0]]))
+
