@@ -1,0 +1,10 @@
+# -*- coding: utf-8 -*-
+# UTF-8 encoding when using korean
+import sys
+
+input = sys.stdin.readline
+
+n = int(input())
+
+a = input().split()
+print(a.count(input().rstrip()))
