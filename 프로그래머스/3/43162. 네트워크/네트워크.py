@@ -15,17 +15,19 @@ def solution(n, computers):
     for i in range(n):
         if visited[i]:
             continue
-        
-        count += 1
+            
         visited[i] = True
-        que = deque([i])
-        while que:
-            e = que.popleft() 
-            for ne in dic[e]:
-                if visited[ne]:
+        count += 1
+        
+        def recursive(s):
+            for e in dic[s]:
+                if visited[e]:
                     continue
-                visited[ne] = True
-                que.append(ne)
                 
+                visited[e] = True
+                recursive(e)
+                
+        recursive(i)
+        
     return count
             
