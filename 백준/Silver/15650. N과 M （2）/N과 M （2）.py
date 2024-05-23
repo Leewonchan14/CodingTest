@@ -2,24 +2,22 @@ import sys
 
 input = sys.stdin.readline
 
-n, k = map(int, input().split())
+N, M = map(int, input().split())
 
-rs = []
-check = [False] * (n + 1)
+ls = []
 
 
-def back(n, k1):
-    if k1 == 0:
-        print(" ".join(map(str, rs)))
+def recursive():
+    if len(ls) == M:
+        print(" ".join(map(str, ls)))
         return
 
-    for i in range(1, n + 1):
-        if not rs or i > rs[-1]:
-            # check[i] = True
-            rs.append(i)
-            back(n, k1 - 1)
-            rs.pop()
-            # check[i] = False
+    for i in range(1, N + 1):
+        if ls and ls[-1] >= i:
+            continue
+        ls.append(i)
+        recursive()
+        ls.pop()
 
 
-back(n, k)
+recursive()
