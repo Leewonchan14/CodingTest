@@ -6,24 +6,20 @@ def solution(n, roads, sources, destination):
         dic[a].append(b)
         dic[b].append(a)
         
-    visited = [False] * ( n + 1 )
     dp = [-1] * (n + 1)
-    que = deque()
-    visited[destination] = True
     dp[destination] = 0
-    que.append((destination, 0))
+    que = deque([(destination, 0)])
     
     while que:
         s,cnt = que.popleft()
-        dp[s] = cnt
         
         for e in dic[s]:
-            if visited[e]:
+            if dp[e] != -1:
                 continue
                 
-            visited[e] = True
+            dp[e] = cnt + 1
             que.append((e, cnt + 1))
             
-    return list(map(lambda x: dp[x], sources))
+    return [dp[s] for s in sources]
                 
     
