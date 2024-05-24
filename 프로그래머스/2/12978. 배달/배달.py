@@ -1,24 +1,23 @@
 from collections import deque
 def solution(N, road, K):
-    weight = [float('inf')] * (N + 1)
-    dic = {i + 1 :[] for i in range(N)}
-    for a, b, c in road:
-        dic[a].append((c, b))
-        dic[b].append((c, a))
+    dic = {i: [] for i in range(0, N + 1)}
+    weights = [float('inf') for i in range(0, N + 1)]
+    weights[1] = 0
+    for a,b,c in road:
+        dic[a].append((b, c))
+        dic[b].append((a, c))
         
-    que = deque()
-    que.append(1)
-    weight[1] = 0
+    que = deque([1])
     
     while que:
-        node = que.popleft()
-        for w, n in dic[node]:
-            if weight[node] + w < weight[n]:
-                weight[n] = weight[node] + w
-                que.append(n)
+        s = que.popleft()
         
-    return len([f for f in weight if f <= K])
+        for e,w in dic[s]:
+            if weights[s] + w >= weights[e]:
+                continue
+                
+            weights[e] = weights[s] + w
+            que.append((e))
+            
+    return len([w for w in weights if w <= K])
     
-        
-    
-        
