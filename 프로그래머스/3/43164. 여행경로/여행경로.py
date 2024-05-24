@@ -1,37 +1,35 @@
-import numpy as np
-
-const = [0]
-
-result = []
-
-ls = ["ICN"]
-
-
-def recursive(dic):
-    if const[0] == len(ls) - 1:
-        result.append(ls[:])
-        return
-    
-    for b in dic[ls[-1]]:
-        if b[1]:
-            continue
-        b[1] = True
-        ls.append(b[0])
-        recursive(dic)
-        ls.pop()
-        b[1] = False
-    
-        
-    
-
 def solution(tickets):
+    r = []
+    ls = ["ICN"]
+    
     dic = {}
-    const[0] = len(tickets)
+    visited = {}
     for a,b in tickets:
-        dic[a] = dic.get(a, [])
-        dic[b] = dic.get(b, [])
-        dic[a].append([b, False])
+        visited[(a,b)] = visited.get((a,b), 0) + 1
         
-    recursive(dic)
-    result.sort(key=lambda x: "".join(x))
-    return result[0] if result else []
+        dic[a] = dic.get(a, [])
+        dic[a].append(b)
+        
+    def recursive(cnt):
+        if len(ls) - 1 == len(tickets):
+            r.append(ls[:])
+            return
+        
+        if ls[-1] not in dic:
+            return
+        
+        for e in dic[ls[-1]]:
+            if visited[(ls[-1], e)] <= 0:
+                continue
+                
+            visited[(ls[-1], e)] -= 1
+            ls.append(e)
+            recursive(cnt + 1)
+            ls.pop()
+            visited[(ls[-1], e)] += 1
+    
+    recursive(0)
+    
+    r.sort(key=lambda x: "".join(x))
+    return r[0] if r else ls
+                
