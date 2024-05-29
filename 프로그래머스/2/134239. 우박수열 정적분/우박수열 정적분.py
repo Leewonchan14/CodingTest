@@ -1,22 +1,15 @@
 def solution(k, ranges):
     dp = [0]
     while k != 1:
-        if k % 2 == 0:
-            n_k = k // 2
-        else:
-            n_k = k * 3 + 1
-        dp.append(dp[-1] + n_k + k)
+        nk = (k * 3 + 1) if k % 2 == 1 else k // 2
+        area = nk + k
+        dp.append((dp[-1] + area) if dp else area)
+        k = nk
         
-        k = n_k
-        
-    n = len(dp) - 1
-    result = []
-    for a,b in ranges:
-        c = n + b
-        if a > n or c > n or c < a:
-            result.append(-1)
-        else:
-            result.append((dp[c] - dp[a]) / 2)
-        
-    return result
-        
+    r = []
+    for a, b in ranges:
+        if len(dp) - 1 + b < a:
+            r.append(-1)
+            continue
+        r.append((dp[len(dp) - 1 + b] - dp[a]) / 2)
+    return r
