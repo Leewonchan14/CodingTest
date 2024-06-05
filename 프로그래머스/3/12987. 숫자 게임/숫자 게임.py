@@ -1,16 +1,22 @@
+from collections import deque
+
 def solution(A, B):
     A.sort()
     B.sort()
-    cnt = 0
-    a_i = 0
-    b_i = 0
-    while b_i < len(B):
-        if A[a_i] < B[b_i]:
-            cnt += 1
-            a_i += 1
-            b_i += 1
-        else:
-            b_i += 1
-            
-    return cnt
     
+    A = deque(A)
+    B = deque(B)
+    
+    cnt = 0
+    
+    while A and B:
+        if A[0] < B[0]:
+            cnt += 1
+            A.popleft()
+            B.popleft()
+        else :
+            B.popleft()
+    
+    return cnt
+
+# print(solution([1,3,9,9], [2,2,8,10])) # 3번나와야함
