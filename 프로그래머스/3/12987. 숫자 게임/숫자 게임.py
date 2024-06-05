@@ -19,4 +19,4 @@ def solution(A, B):
     
     return cnt
 
-# print(solution([1,3,9,9], [2,2,8,10])) # 3번나와야함
+print(solution([1,3,9,9], [2,2,8,10])) # 3나와야함
