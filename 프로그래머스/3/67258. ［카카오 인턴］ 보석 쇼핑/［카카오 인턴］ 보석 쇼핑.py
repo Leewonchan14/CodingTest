@@ -31,6 +31,7 @@ def solution(gems):
         # 안남으면 break
         else:
             break
+    
     r.sort(key=lambda x : x[1] - x[0])
     return [r[0][0] + 1, r[0][1]]
         
