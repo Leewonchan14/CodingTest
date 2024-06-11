@@ -1,33 +1,28 @@
-from collections import deque
+def dfs(n, visited, dic):
+    for i in dic[n]:
+        if not visited[i]:
+            visited[i] = True
+            dfs(i, visited, dic)
+    
+    
 
 def solution(n, computers):
+    visited = [False] * n
+    
     dic = {i:[] for i in range(n)}
     
     for i in range(n):
         for j in range(n):
-            if computers[i][j] == 0:
-                continue
-            dic[i].append(j)
-            dic[j].append(i)
-    
-    count = 0
-    visited = [False] * n
+            if computers[i][j] == 1:
+                dic[i].append(j)
+                dic[j].append(i)
+                
+    cnt = 0
     for i in range(n):
-        if visited[i]:
-            continue
+        if not visited[i]:
+            cnt += 1
+            dfs(i, visited, dic)
             
-        visited[i] = True
-        count += 1
-        
-        def recursive(s):
-            for e in dic[s]:
-                if visited[e]:
-                    continue
-                
-                visited[e] = True
-                recursive(e)
-                
-        recursive(i)
-        
-    return count
+    return cnt
             
+    
