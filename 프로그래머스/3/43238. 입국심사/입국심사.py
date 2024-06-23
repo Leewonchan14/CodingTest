@@ -1,19 +1,23 @@
+def cal(mid, times):
+    return sum([mid // t for t in times])
+
 def solution(n, times):
-    mx = n * times[-1]
-    mn = 0
-
-    answer = float('inf')
-
-    while mn <= mx:
-        mid = (mx + mn) // 2
-        can_people = sum([mid // t for t in times])
-
-        if can_people >= n:
-            answer = min(answer, mid)
-            mx = mid - 1
+    left = 0
+    right = 10000000000000000000
+    # right = 50
+    mid = (left + right) // 2
+    
+    while left != right:
+    # for i in range(15):
+        r = cal(mid, times)
+        if r < n:
+            left = mid + 1
         else:
-            mn = mid + 1
-
-    return answer
-
-
+            right = mid
+            
+        mid = (left + right) // 2
+        
+        # print(left, mid, right)
+        
+    return mid
+    
