@@ -2,6 +2,11 @@ import java.util.stream.*;
 import java.util.*;
 class Solution {
     public int solution(int[] array, int n) {
-        return (int)Arrays.stream(array).filter(i->i==n).count();
+        int count = 0;
+        for(int i = 0; i < array.length; i++ ){
+            if(array[i] == n) count++;
+        }
+        
+        return count;
     }
 }
