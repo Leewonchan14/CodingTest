@@ -1,8 +1,10 @@
 import java.util.stream.*;
 import java.util.*;
 class Solution {
-    public List<Integer> solution(int[] numbers) {
-        return Arrays.stream(numbers).mapToObj(i->i*2)
-            .collect(Collectors.toList());
+    public int[] solution(int[] numbers) {
+        for(int i = 0; i < numbers.length ; i++){
+            numbers[i] *= 2;
+        }
+        return numbers;
     }
 }
