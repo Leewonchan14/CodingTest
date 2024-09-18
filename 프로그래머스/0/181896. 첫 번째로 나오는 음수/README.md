@@ -1,6 +1,6 @@
 # [level 0] 첫 번째로 나오는 음수 - 181896 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181896?language=javascript) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181896) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 04월 05일 14:11:02
+2024년 09월 18일 13:10:06
 
 ### 문제 설명
 
