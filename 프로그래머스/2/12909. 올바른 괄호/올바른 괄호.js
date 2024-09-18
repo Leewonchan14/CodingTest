@@ -1,17 +1,14 @@
 function solution(s){
-    s = [...s]
     let stk = []
-    for (let i = 0; i < s.length ; i ++){
-        if (stk.length === 0 || s[i] === "("){
-            stk.push(s[i])
-            continue
+    
+    for(let v of s) {
+        if (v === ")" && stk.at(-1) === "(") {
+            stk.pop();continue;
         }
         
-        if(stk.at(-1) === "("){
-            stk.pop()
-        }
+        stk.push(v);
     }
     
-    return stk.length == 0
+    return stk.length === 0 ? true : false;
 
 }
