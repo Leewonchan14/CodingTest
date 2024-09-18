@@ -1,23 +1,35 @@
 def is_collect(s):
-    stk = []
-    mapper = dict(zip(")}]({[", "({[)}]"))
-    open = "({["
-    close = ")}]"
+    dic = {
+        "{": "}",
+        "[" : "]",
+        "(" : ")",
+        "}": "{",
+        "]" : "[",
+        ")" : "("
+    }
     
-    for i in s:
-        if i in open or not stk:
-            stk.append(i)
-            continue
-        
-        if stk[-1] == mapper[i]:
+    open = "{[("
+    
+    stk = []
+    
+    for v in s:
+        if stk and v not in open and stk[-1] == dic[v]:
             stk.pop()
+            continue
             
+        stk.append(v)
+        
     return len(stk) == 0
             
         
 
 
 def solution(s):
-    ls = [s[i:] + s[:i] for i in range(len(s))]
-    return len([i for i in ls if is_collect(i)])
+    cnt = 0
+    for i in range(len(s)):
+        if (is_collect(s)):
+            cnt += 1
+        s = s[1:] + s[0]
+            
+    return cnt
             
