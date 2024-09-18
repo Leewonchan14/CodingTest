@@ -1,7 +1,3 @@
-function solution(start, end_num) {
-    rs = []
-    for(let i = start ; i >= end_num ; i--){
-        rs.push(i)
-    }
-    return rs
+function solution(start_num, end_num) {
+    return [...Array(start_num - end_num + 1)].map((v,i) => start_num - i)
 }
