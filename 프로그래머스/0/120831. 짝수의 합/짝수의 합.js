@@ -1,4 +1,3 @@
 function solution(n) {
-    n = n - n % 2
-    return (n / 2) * (n / 2 + 1)
+    return [...Array(n + 1)].map((v, i) => i).filter(a => a % 2 === 0).reduce((acc,b) => acc + b , 0)
 }
