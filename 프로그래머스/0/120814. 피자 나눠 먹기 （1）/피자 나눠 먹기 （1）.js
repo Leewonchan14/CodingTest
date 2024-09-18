@@ -1,3 +1,3 @@
 function solution(n) {
-    return parseInt((n - 1) / 7) + 1
+    return Math.ceil(n / 7)
 }
