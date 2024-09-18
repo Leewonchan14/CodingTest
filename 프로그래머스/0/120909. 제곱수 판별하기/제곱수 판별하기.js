@@ -1,3 +1,3 @@
 function solution(n) {
-    return n**0.5 == parseInt(n**0.5) ? 1 : 2
+    return Math.sqrt(n) === Math.floor(n / Math.sqrt(n)) ? 1 : 2;
 }
