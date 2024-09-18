@@ -1,3 +1,4 @@
 function solution(money) {
-    return [Math.floor(money /5500), money % 5500]
+    let cnt = Math.floor(money / 5500);
+    return [cnt , money - cnt * 5500]
 }
