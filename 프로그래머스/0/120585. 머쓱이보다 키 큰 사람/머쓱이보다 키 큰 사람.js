@@ -1,3 +1,3 @@
 function solution(array, height) {
-    return array.filter(n => n > height).length
+    return array.filter(a => a > height).length
 }
