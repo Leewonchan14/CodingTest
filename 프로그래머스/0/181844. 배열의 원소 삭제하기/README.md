@@ -1,10 +1,10 @@
 # [level 0] 배열의 원소 삭제하기 - 181844 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181844?language=python3) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181844?language=javascript) 
 
 ### 성능 요약
 
-메모리: 10 MB, 시간: 0.00 ms
+메모리: 33.5 MB, 시간: 0.07 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 2월 4일 14:37:34
+2024년 09월 18일 13:25:37
 
 ### 문제 설명
 
