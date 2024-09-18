@@ -1,10 +1,5 @@
 function solution(my_string) {
-    const arr =[];
-    Array.from(my_string).forEach((i, index) => {
-        arr.push(my_string.slice(index));
-    });
+    let preFixes = [...Array(my_string.length)].map((v, i) => my_string.slice(-i))
     
-    arr.sort();
-    
-    return arr;
+    return preFixes.sort();
 }
