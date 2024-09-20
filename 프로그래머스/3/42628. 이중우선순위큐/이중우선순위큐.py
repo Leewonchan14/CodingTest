@@ -21,22 +21,26 @@ from collections import deque
 def index(que, start, end, value):
     if len(que) == 0:
         return 0
-
+    
+    mid = (start + end) // 2
+    
     if start == end:
         return start
-
-    mid = (start + end) // 2
-
-    if value < que[mid]:
+    
+    if value <= que[mid]:
         return index(que, start, mid, value)
+        
     elif value > que[mid]:
         return index(que, mid + 1, end, value)
-    else:
-        return mid
+    
+    
+    
 
 
 def solution(operations):
     que = deque()
+    
+    # print(dir(que))
     
     for item in operations:
         oper, value = item.split()
