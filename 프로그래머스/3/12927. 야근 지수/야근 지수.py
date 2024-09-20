@@ -22,20 +22,27 @@
 
 def solution(n, works):
     count = [0] * 50001
-
-    maxv = -1
-
+    
+    max_idx = 50000
+    
     for w in works:
-        maxv = max(maxv, w)
         count[w] += 1
-
+        
     while n > 0:
+        while count[max_idx] == 0 and max_idx >= 0:
+            max_idx -= 1
+            
+        if max_idx < 0:
+            break
+        
         n -= 1
-        count[maxv] -= 1
-        count[maxv - 1] += 1
-        if count[maxv] == 0:
-            maxv -= 1
-            if maxv == 0:
-                break 
-
-    return sum([(i ** 2) * v for i, v in enumerate(count) if v != 0])
+        count[max_idx] -= 1
+        if max_idx > 0:
+            count[max_idx - 1] += 1
+        
+    print([(i ** 2) * v for i,v in enumerate(count) if not v == 0])
+    
+    return sum([(i ** 2) * v for i,v in enumerate(count)])
+        
+        
+            
