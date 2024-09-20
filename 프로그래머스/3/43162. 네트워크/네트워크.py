@@ -1,28 +1,22 @@
-def dfs(n, visited, dic):
-    for i in dic[n]:
-        if not visited[i]:
-            visited[i] = True
-            dfs(i, visited, dic)
+def dfs(start, visited, computers, n):
+    for end in range(n):
+        if computers[start][end] == 0 or visited[end]:
+            continue
+            
+        visited[end] = True
+        dfs(end, visited, computers, n)
     
-    
+
 
 def solution(n, computers):
     visited = [False] * n
-    
-    dic = {i:[] for i in range(n)}
-    
-    for i in range(n):
-        for j in range(n):
-            if computers[i][j] == 1:
-                dic[i].append(j)
-                dic[j].append(i)
-                
     cnt = 0
-    for i in range(n):
-        if not visited[i]:
-            cnt += 1
-            dfs(i, visited, dic)
+    for start in range(n):
+        if visited[start]:
+            continue
+            
+        cnt += 1
+        visited[start] = True
+        dfs(start, visited, computers, n)
             
     return cnt
-            
-    
