@@ -1,10 +1,7 @@
 from collections import deque
 
 def is_can_go(star, end):
-    cnt = 0
-    for a, b in zip(star, end):
-        if a != b:
-            cnt += 1
+    return sum([int(a != b) for a, b in zip(star, end)]) == 1
             
     return cnt == 1
 
