@@ -13,18 +13,34 @@
 """
 
 def solution(m, n, puddles):
-    dp = [[0] * (m + 1) for _ in range(n+1)]
-    dp[0][1] = 1
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
     
-    for column,row in puddles:
-        dp[row][column] = -1
+#     for i in range(m + 1):
+#         dp[0][i] = 1
+        
+#     for i in range(n + 1):
+#         dp[i][0] = 1
     
-    for row in range(1, n + 1):
-        for column in range(1, m + 1):
-            if dp[row][column] == -1:
-                dp[row][column] = 0
+    
+    dic = {}
+    
+    for a, b in puddles:
+        dic[b,a] = True
+    
+        
+    for h in range(1, n + 1):
+        for w in range(1, m + 1):
+            if h == 1 and w == 1:
+                dp[h][w] = 1
                 continue
-            dp[row][column] = (dp[row - 1][column] + dp[row][column - 1]) % 1000000007
+                
+            dp[h][w] = (dp[h - 1][w] + dp[h][w - 1]) % 1000000007
+            
+            if (h, w) in dic:
+                dp[h][w] = 0
+                
+    return dp[-1][-1]
+            
     
-    return dp[n][m]    
+            
     
