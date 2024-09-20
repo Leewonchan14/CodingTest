@@ -1,43 +1,32 @@
 from collections import deque
 
-def isGap3(a,b):
-    if len(a) != len(b):
-        return False
-    
+def is_can_go(star, end):
     cnt = 0
-    for i in range(len(a)):
-        if a[i] != b[i]:
+    for a, b in zip(star, end):
+        if a != b:
             cnt += 1
-            if cnt >= 2:
-                return False
-    
-    if cnt == 1:
-        return True
-    else:
-        return False
-        
+            
+    return cnt == 1
 
 def solution(begin, target, words):
-    words.append(begin)
-    dic = {w: [] for w in words}
-    for i in range(len(words) - 1):
-        for j in range(i, len(words)):
-            if isGap3(words[i], words[j]):
-                dic[words[i]].append(words[j])
-                dic[words[j]].append(words[i])
-                
-    visited = {w : False for w in words}
-    que = deque([(begin, 0)])
+    que = deque()
+    
+    visited = {w: False for w in words}
+    
+    visited[begin] = True
+    
+    que.append((begin, 0))
+    
     while que:
-        s,cnt = que.popleft()
-        if s == target:
+        start, cnt = que.popleft()
+        
+        if start == target:
             return cnt
         
-        for e in dic.get(s, []):
-            if visited[e]:
-                continue
-            visited[e] = True
-            que.append((e, cnt + 1))
-            
+        for w in words:
+            if not visited[w] and is_can_go(start, w):
+                visited[w] = True
+                que.append((w, cnt + 1))
+                
     return 0
         
