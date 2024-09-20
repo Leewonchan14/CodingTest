@@ -15,19 +15,20 @@
 
 
 def solution(triangle):
-    dp = [[0] * len(item) for item in triangle]
-    max_height = len(triangle)
-
-    dp[0][0] = triangle[0][0]
-
-    height = 1
-    while height < max_height:
-        for index, item in enumerate(triangle[height]):
-            if index != len(triangle[height]) - 1:
-                dp[height][index] = max(dp[height][index], dp[height - 1][index] + item)
-            if index != 0:
-                dp[height][index] = max(dp[height][index], dp[height - 1][index - 1] + item)
-
-        height += 1
-
+    dp = [triangle[0]]
+    for h in range(1, len(triangle)):
+        dp.append([])
+        for w in range(h + 1):
+            top = None
+            if 0 < w < h:
+                top = max(dp[h - 1][w - 1], dp[h - 1][w])
+            else:
+                top = dp[h - 1][w] if w == 0 else dp[h - 1][w - 1]
+                
+            dp[h].append(top + triangle[h][w])
+                
+        
+    
     return max(dp[-1])
+                
+    
