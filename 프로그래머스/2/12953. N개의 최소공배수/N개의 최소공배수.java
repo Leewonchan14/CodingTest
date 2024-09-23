@@ -2,46 +2,25 @@ import java.util.stream.*;
 import java.util.*;
 
 class Solution {
-    
-    int[] ints;
-    
-    public int solution(int[] arr) {
-        ints = new int[101];
+    public int lcm(int a, int b){
+        int sourceMin = Math.min(a, b);
+        int sourceMax = Math.max(a, b);
+        int min = sourceMin;
+        int max = sourceMax;
         
-        for(int i = 0; i < arr.length ; i++){
-            toSoDiv(arr[i]);
+        while(max != min){
+            if (min < max) min += sourceMin;
+            else max += sourceMax;
         }
         
-        int mul = 1;
-        
-        for(int i = 2; i < ints.length;i++){
-            for(int j = 0;j < ints[i]; j++){
-                mul *= i;
-                System.out.println(mul);
-            }
-        }
-        
-        return mul;
+        return max;
     }
     
-    public void toSoDiv(int n){
-        
-        int temp = 0;
-        
-        int i = 2;
-        
-        while(n > 1){
-            if(n % i == 0){
-                temp++;
-                if(ints[i] < temp){
-                    ints[i] = temp;
-                }
-                
-                n = n / i;
-                continue;
-            }
-            temp = 0;
-            i++;
+    public int solution(int[] arr) {
+        int temp = 1;
+        for(int i : arr){
+            temp = lcm(temp, i);
         }
+        return temp;
     }
 }
