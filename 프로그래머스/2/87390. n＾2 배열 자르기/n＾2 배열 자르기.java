@@ -5,15 +5,7 @@ class Solution {
         int idx = 0;
         
         for(long i = left; i < right + 1; i++){
-            long w = i % n;
-            long h = i / n;
-            
-            long temp = 0;
-            
-            if (w <= h) temp = h;
-            else temp = w;
-            
-            result[idx++] = (int)temp + 1;
+            result[idx++] = (int)Math.max(i % n, i / n) + 1;
         }
         
         return result;
