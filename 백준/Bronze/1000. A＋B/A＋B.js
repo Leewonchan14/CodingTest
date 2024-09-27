@@ -1,4 +1,3 @@
-const fs = require('fs');
-const [A, B] = fs.readFileSync(0, 'utf-8').trim().split(' ').map(Number);
-
-console.log(A + B);
+const fs = require("fs");
+const [a, b] = fs.readFileSync(0, 'utf-8').toString().trim().split(' ')
+console.log(+a + +b);
