@@ -1,23 +1,24 @@
 import sys
 
-n = int(input())
-for i in range(n):
-    s = sys.stdin.readline().rstrip()
+input = sys.stdin.readline
 
-    li = []
-    for j in s:
-        if len(li) == 0:
-            li.append(j)
+inputs = [input().strip() for _ in range(int(input()))]
+
+def isCorrect(li):
+    stk = []
+    for i in li:
+        if i == ")":
+            if not stk or stk[-1] != "(":
+                return False
+            
+            stk.pop()
             continue
+            
+        stk.append(i)
+        
+    return not stk
+        
 
-        if j == ")":
-            if li[-1] == "(":
-                li.pop()
-            else:
-                break
-        else:
-            li.append(j)
-    if len(li) != 0:
-        print("NO")
-    else:
-        print("YES")
+for i in inputs:
+    li = list(i)
+    print("YES" if isCorrect(li) else "NO")
