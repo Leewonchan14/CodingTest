@@ -1,10 +1,12 @@
 input()
+m = list(map(int, input().split()))
+input()
+n = list(map(int, input().split()))
+
 dic = {}
-li = list(map(int, input().split()))
-for i in li:
+for i in m:
     dic[i] = dic.get(i, 0) + 1
 
-input()
+print(" ".join([str(dic.get(i, 0)) for i in n]))
 
-m = list(map(int, input().split()))
-print(" ".join([str(dic.get(i, 0)) for i in m]))
+
