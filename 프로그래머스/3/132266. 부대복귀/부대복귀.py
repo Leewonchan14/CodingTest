@@ -1,25 +1,35 @@
 from collections import deque
 
+
+def bfs(visited, weights, start, destination):
+    pass
+
 def solution(n, roads, sources, destination):
-    dic = {i: [] for i in range(n + 1)}
+    weights = [-1] * (n + 1)
+    visited = [False] * (n + 1)
+    dic = {}
     for a, b in roads:
+        dic[a] = dic.get(a, [])
+        dic[b] = dic.get(b, [])
         dic[a].append(b)
         dic[b].append(a)
-        
-    dp = [-1] * (n + 1)
-    dp[destination] = 0
+    
+    visited[destination] = True
+    weights[destination] = 0
     que = deque([(destination, 0)])
     
     while que:
-        s,cnt = que.popleft()
+        start, k = que.popleft()
         
-        for e in dic[s]:
-            if dp[e] != -1:
+        for end in dic.get(start,[]):
+            if visited[end]:
                 continue
-                
-            dp[e] = cnt + 1
-            que.append((e, cnt + 1))
+            visited[end] = True
+            que.append((end, k + 1))
+            weights[end] = k + 1
             
-    return [dp[s] for s in sources]
-                
+    
+    return list(map(lambda x: weights[x], sources))
+            
+    
     
