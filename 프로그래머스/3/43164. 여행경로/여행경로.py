@@ -1,35 +1,32 @@
-def solution(tickets):
-    r = []
-    ls = ["ICN"]
+import heapq
+
+def dfs(visited, start, dic, result, n):
+    if len(result) == n + 1:
+        return True
     
+    for end in sorted(dic.get(start, [])):
+        if visited[(start, end)] == 0:
+            continue
+            
+        visited[(start, end)] -= 1
+        result.append(end)
+        if dfs(visited, end, dic, result, n):
+            return True
+        result.pop()
+        visited[(start, end)] += 1
+    
+
+def solution(tickets):
     dic = {}
     visited = {}
-    for a,b in tickets:
-        visited[(a,b)] = visited.get((a,b), 0) + 1
-        
+    for a, b in tickets:
         dic[a] = dic.get(a, [])
         dic[a].append(b)
+        visited[(a, b)] = visited.get((a, b), 0) + 1
         
-    def recursive(cnt):
-        if len(ls) - 1 == len(tickets):
-            r.append(ls[:])
-            return
+    result = ["ICN"]
         
-        if ls[-1] not in dic:
-            return
-        
-        for e in dic[ls[-1]]:
-            if visited[(ls[-1], e)] <= 0:
-                continue
-                
-            visited[(ls[-1], e)] -= 1
-            ls.append(e)
-            recursive(cnt + 1)
-            ls.pop()
-            visited[(ls[-1], e)] += 1
+    dfs(visited, "ICN", dic, result, len(tickets))
     
-    recursive(0)
-    
-    r.sort(key=lambda x: "".join(x))
-    return r[0] if r else ls
-                
+    return result
+        
