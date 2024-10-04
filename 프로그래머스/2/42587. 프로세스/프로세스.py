@@ -1,21 +1,23 @@
 from collections import deque
+from queue import PriorityQueue
 
 def solution(priorities, location):
-    cnt = 0
-    que = deque(enumerate(priorities))
-    li = sorted(priorities)
+    p_que = PriorityQueue()
     
-    while que:
-        pop = que.popleft()
-        if li and li[-1] == pop[1]:
-            cnt+=1
-            li.pop()
-            
-            if pop[0] == location:
-                break
-            
+    for p in priorities:
+        p_que.put((1 / p, p))
+        
+    que = deque(enumerate(priorities))
+    
+    cnt = 0
+    
+    while que[0][0] != location or que[0][1] != p_que.queue[0][1]:
+        if que[0][1] == p_que.queue[0][1]:
+            cnt += 1
+            p_que.get()
+            que.popleft()
             continue
             
-        que.append(pop)
+        que.append(que.popleft())
         
-    return cnt
+    return cnt + 1
