@@ -1,23 +1,28 @@
 from collections import deque
+import heapq
+
 def solution(N, road, K):
-    dic = {i: [] for i in range(0, N + 1)}
-    weights = [float('inf') for i in range(0, N + 1)]
+    weights = [float('inf')] * (N + 1)
     weights[1] = 0
+    
+    dic = {}
     for a,b,c in road:
+        dic[a] = dic.get(a, [])
+        dic[b] = dic.get(b, [])
         dic[a].append((b, c))
         dic[b].append((a, c))
-        
+    
     que = deque([1])
     
     while que:
-        s = que.popleft()
+        start = que.popleft()
         
-        for e,w in dic[s]:
-            if weights[s] + w >= weights[e]:
-                continue
+        for end, w in dic[start]:
+            if weights[start] + w < weights[end]:
+                weights[end] = weights[start] + w
+                que.append(end)
                 
-            weights[e] = weights[s] + w
-            que.append((e))
+    return len(list(filter(lambda x: x <= K, weights)))
             
-    return len([w for w in weights if w <= K])
+    
     
