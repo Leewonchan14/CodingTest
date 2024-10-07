@@ -1,23 +1,17 @@
-import sys
+n, m = map(int, input().split())
 
-input = sys.stdin.readline
+arr = list(map(str, range(1, n + 1)))
 
-N, M = map(int, input().split())
-
-ls = []
-
-
-def recursive():
-    if len(ls) == M:
-        print(" ".join(map(str, ls)))
+def recursive(li, k):
+    if k == m:
+        print(" ".join(li))
         return
 
-    for i in range(1, N + 1):
-        if ls and ls[-1] >= i:
-            continue
-        ls.append(i)
-        recursive()
-        ls.pop()
+    for i in arr:
+        if not li or li[-1] < i:
+            li.append(i)
+            recursive(li, k + 1)
+            li.pop()
 
 
-recursive()
+recursive([], 0)
