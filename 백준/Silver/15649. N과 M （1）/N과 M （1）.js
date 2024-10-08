@@ -9,6 +9,8 @@ const [n, m] = fs
 .split(" ")
 .map(Number);
 
+const visited = {}
+
 const recursive = (li) => { 
   if(li.length === m){
     console.log(li.join(" "));
@@ -16,11 +18,13 @@ const recursive = (li) => {
   }
 
   for(let i = 1; i<= n; i++){
-    if(li.find((v) => v === i)) continue;
+    if(visited[i]) continue;
+    visited[i] = true;
     li.push(i);
     recursive(li);
     li.pop();
+    visited[i] = false;
   }
 }
 
-recursive([])
+recursive([]);
