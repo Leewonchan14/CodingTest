@@ -1,12 +1,12 @@
-def dfs(visited, start, computers):
-    for end in range(len(computers)):
-        if visited[end] or computers[start][end] != 1:
-            continue
-        visited[end] = True
-        dfs(visited, end, computers)
-        
-        
-    
+import sys
+
+
+def dfs(i, computers, visited):
+    for j in range(len(computers)):
+        if not visited[j] and computers[i][j] == 1:
+            visited[j] = True
+            dfs(j, computers, visited)
+
 
 def solution(n, computers):
     visited = [False] * n
@@ -15,6 +15,8 @@ def solution(n, computers):
         if not visited[i]:
             visited[i] = True
             cnt += 1
-            dfs(visited, i, computers)
-            
+            dfs(i, computers, visited)
+
     return cnt
+
+
