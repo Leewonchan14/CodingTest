@@ -1,16 +1,26 @@
+def zeroCnt(s):
+    return s.count("0")
+
+def filterZero(s):
+    return [i for i in s if i != "0"]
+
+def toBin(s):
+    return bin(s)[2:]
+    
+def toInt(s):
+    return int(s, 2)
+
 def solution(s):
-    count = 0
-    zero_count = 0
-    while s != "1":
-        count += 1
-        non_zero = list(filter(lambda x : x != "0", list(s)))
-        length = len(non_zero)
-        pre_length = len(s)
-        
-        zero_count += (pre_length - length)
-        
-        bin_length = bin(length)[2:]
-        s = bin_length
-    return [count, zero_count]
     
+    cnt = 0
+    zero = 0
     
+    while True:
+        cnt += 1
+        zero += zeroCnt(s)
+        s = filterZero(s)
+        s = toBin(len(s))
+        
+        if s == "1":
+            break
+    return [cnt, zero]
