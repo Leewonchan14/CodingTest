@@ -8,4 +8,3 @@ def solution(phone_book):
         dic.add(p)
     return True
 
-print(solution( ["010111", "010"] ))
