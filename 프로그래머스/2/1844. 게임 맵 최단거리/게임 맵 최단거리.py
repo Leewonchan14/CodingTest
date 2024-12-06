@@ -1,31 +1,44 @@
 from collections import deque
 
-def bfs(y, x, maps):
-    que = deque()
-    n = len(maps) - 1
-    m = len(maps[0]) - 1
-    que.append((y, x, 1))
-    dy = [0,-1,0,1]
-    dx = [1,0,-1,0]
-    visited = [[False] * (m + 1) for _ in range(n + 1)]
-    visited[y][x] = True
-    while que:
-        y, x, count = que.popleft()
-        
-        if y == n and x == m:
-            return count
-        
-        for i in range(4):
-            ny = y + dy[i]
-            nx = x + dx[i]
-            if 0<=ny<=n and 0<=nx<=m and maps[ny][nx] == 1 and not visited[ny][nx]:
-                visited[ny][nx] = True
-                que.append((ny,nx,count + 1))
-                
-    return -1
-    
-    
+
+class Length:
+    maps = []
+    visited = []
+    dx = [0, 1, 0, -1]
+    dy = [1, 0, -1, 0]
+
+    def __init__(self, maps):
+        self.maps = maps
+        self.visited = [[False] * len(c) for c in maps]
+
+    def isInnerPoint(self, y, x):
+        return (
+            0 <= y < len(self.maps)
+            and 0 <= x < len(self.maps[0])
+            and not self.visited[y][x]
+            and self.maps[y][x] == 1
+        )
+
+    def isTarget(self, y, x):
+        return y == len(self.maps) - 1 and x == len(self.maps[0]) - 1
+
+    def bfs(self):
+        que = deque([])
+        que.append((0, 0, 1))
+        while que:
+            y, x, cnt = que.popleft()
+            if self.isTarget(y, x):
+                return cnt
+
+            for i in range(4):
+                ny = y + self.dy[i]
+                nx = x + self.dx[i]
+                if self.isInnerPoint(ny, nx):
+                    self.visited[ny][nx] = True
+                    que.append((ny, nx, cnt + 1))
+
+        return -1
+
 
 def solution(maps):
-    return bfs(0, 0, maps)
-    
+    return Length(maps).bfs()
