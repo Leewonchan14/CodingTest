@@ -1,13 +1,19 @@
+li = []
+cache = {}
+
+def recursive(cnt, n, words):
+    order = cnt % n
+    if cnt >= len(words):
+        return [0, 0]
+    word = words[cnt]
+    if word in cache or (li and li[-1][-1] != word[0]):
+        return [order + 1, cnt // n + 1]
+    
+    li.append(word)
+    cache[word] = 0
+    
+    return recursive(cnt + 1, n, words) 
+
 def solution(n, words):
-    dic = {words[0] : 0}
-    result = []
-    for i in range(1, len(words)):
-        if words[i - 1][-1] != words[i][0] or words[i] in dic:
-            result = [i % n + 1, i // n + 1]
-            break;
-            
-        dic[words[i]] = 0
-        
-    return result if result else [0 ,0]
-        
-        
+    k = recursive(0, n, words)
+    return k
