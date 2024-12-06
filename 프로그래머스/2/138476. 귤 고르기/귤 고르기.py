@@ -3,18 +3,15 @@ def solution(k, tangerine):
     for i in tangerine:
         dic[i] = dic.get(i, 0) + 1
     
-    arr = sorted(dic.items(), key=lambda x : x[1], reverse=True)
-    count = 0 
-    for i in arr:
-        k -= i[1]
-        count += 1
-        if k <= 0:
-            break
-        
-    return count
-        
-        
-        
-        
+    entries = sorted(dic.items(), key=lambda x: x[1], reverse=True)
     
-        
+    rt = 0
+    _sum = 0
+    
+    for size, cnt in entries:
+        _sum += cnt
+        rt += 1
+        if _sum >= k:
+            break
+    
+    return rt
