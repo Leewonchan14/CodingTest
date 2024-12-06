@@ -1,17 +1,22 @@
-def recursive(numbers, target, li):
-    if len(li) == len(numbers):
-        if sum(li) == target:
-            return 1
-        else:
-            return 0
+class Main:
+    numbers = []
+    target = 0
 
-    li1 = li[:]
-    li2 = li[:]
-    li1.append(numbers[len(li)])
-    li2.append(numbers[len(li)] * -1)
+    def __init__(self, numbers, target):
+        self.numbers = numbers
+        self.target = target
 
-    return recursive(numbers, target, li1) + recursive(numbers, target, li2)
+    def recursive(self, li):
+        if len(li) == len(self.numbers):
+            if sum(li) == self.target:
+                return 1
+            else:
+                return 0
+
+        return self.recursive([*li, self.numbers[len(li)]]) + self.recursive(
+            [*li, self.numbers[len(li)] * -1]
+        )
 
 
 def solution(numbers, target):
-    return recursive(numbers, target, [])
+    return Main(numbers, target).recursive([])
