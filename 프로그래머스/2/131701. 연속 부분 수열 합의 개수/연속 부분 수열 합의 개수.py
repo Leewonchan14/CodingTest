@@ -7,6 +7,4 @@ def solution(elements):
             size -= elements[k]
             size += elements[(k + i) % len(elements)]
             dic[size] = 0
-            
     return len(dic.keys())
-        
