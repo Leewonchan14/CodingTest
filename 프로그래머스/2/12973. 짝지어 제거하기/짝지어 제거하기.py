@@ -1,12 +1,28 @@
-def solution(s):
+import sys
+sys.setrecursionlimit(10 ** 9)
+
+def recursive(s):
+    if not s:
+        return True
+    
     stk = []
-    for i in s:
-        if not stk or stk[-1] != i:
-            stk.append(i)
+    isNothing = True
+    for i, c in enumerate(s):
+        if not stk:
+            stk.append(c)
             continue
         
-        stk.pop()
-        
-    return 0 if stk else 1
+        if stk[-1] == c:
+            isNothing = False
+            stk.pop()
+            continue
             
-        
+        stk.append(c)
+    
+    if isNothing:
+        return False
+    
+    return recursive(stk)
+
+def solution(s):
+    return int(recursive(list(s)))
