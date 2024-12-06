@@ -1,8 +1,10 @@
+def getPositionValue(k, n):
+    row = k // n
+    col = k % n
+    
+    return col if col >= row else row
+
+
 def solution(n, left, right):
-    answer = []
-    for i in range(left, right + 1):
-        row = i // n
-        column = i % n
-        answer.append(max(row + 1, column + 1))
-        
-    return answer
+    return [getPositionValue(i ,n) + 1 for i in range(left, right + 1)]
+    
