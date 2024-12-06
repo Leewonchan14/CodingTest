@@ -1,11 +1,8 @@
 def solution(A,B):
-    A.sort()
-    B.sort(reverse=True)
-    count = 0
-    for i in range(len(A)):
-        count += A[i] * B[i]
-    return count
+    A.sort(reverse=True)
+    B.sort()
+    sum = 0
+    while A and B:
+        sum += A.pop() * B.pop()
         
-    
-
-    
+    return sum
