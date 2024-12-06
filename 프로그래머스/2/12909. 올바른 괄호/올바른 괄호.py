@@ -1,15 +1,17 @@
 def solution(s):
+    li = list(s)
     stk = []
-    for i in s:
-        if not stk or i == "(":
+    for i in li:
+        if i == "(":
             stk.append(i)
             continue
             
-        if stk and stk[-1] == "(" and i == ")":
+        # i == ")"
+        if not stk or stk[-1] == ")":
+            return False
+        elif stk[-1] == "(":
             stk.pop()
             
-    return len(stk) == 0
-            
-            
         
+    return len(stk) == 0
         
