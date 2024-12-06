@@ -1,35 +1,29 @@
-def is_collect(s):
-    dic = {
-        "{": "}",
-        "[" : "]",
-        "(" : ")",
-        "}": "{",
-        "]" : "[",
-        ")" : "("
-    }
+match = {}
+for i in ["()", "{}", "[]"]:
+    a,b = list(i)
+    match[b] = a
     
-    open = "{[("
-    
+def isCorrect(s):
     stk = []
-    
-    for v in s:
-        if stk and v not in open and stk[-1] == dic[v]:
-            stk.pop()
+    for i in s:
+        if not stk or i in match.values():
+            stk.append(i)
             continue
             
-        stk.append(v)
+        if i in match.keys() and match[i] == stk[-1]:
+            stk.pop()
+        else:
+            return False
         
     return len(stk) == 0
-            
         
-
+                
 
 def solution(s):
     cnt = 0
     for i in range(len(s)):
-        if (is_collect(s)):
+        _s = s[i:] + s[:i]
+        if isCorrect(list(_s)):
             cnt += 1
-        s = s[1:] + s[0]
             
     return cnt
-            
