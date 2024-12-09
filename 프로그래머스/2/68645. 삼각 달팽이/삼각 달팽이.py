@@ -33,8 +33,4 @@ def solution(n):
         if not some:
             break
 
-    li = []
-    for i in arr:
-        li.extend(i)
-
-    return li
+    return [x for y in arr for x in y]
