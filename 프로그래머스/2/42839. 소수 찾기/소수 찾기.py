@@ -1,28 +1,39 @@
-is_prime = [True for i in range(10000000)]
-is_prime[0] = False
-is_prime[1] = False
+import math
 
-for i in range(2, 10000000):
-    if is_prime[i]:
-        for j in range(i + i, 10000000, i):
-            is_prime[j] = False
 
-import itertools
+def allNumbers(numbers, li, visited, l, result):
+    if len(li) == l:
+        result.append(li[:])
+        return
+
+    for i, n in enumerate(numbers):
+        if visited[i]:
+            continue
+
+        li.append(n)
+        visited[i] = True
+        allNumbers(numbers, li, visited, l, result)
+        visited[i] = False
+        li.pop()
+
+
+def isPrime(n):
+    if n <= 1:
+        return False
+
+    for i in range(2, math.floor(math.sqrt(n)) + 1):
+        if n % i == 0:
+            return False
+    return True
 
 
 def solution(numbers):
     numbers = list(numbers)
-    prime_ls = set()
+    nums = set()
     for i in range(1, len(numbers) + 1):
-        per = list(itertools.permutations(numbers, i))
-        per = list(map(lambda x: int("".join(list(x))), per))
-        per = list(set(per))
+        visited = [False for i in numbers]
+        result = []
+        allNumbers(numbers, [], visited, i, result)
+        nums.update(set([int("".join(n)) for n in result]))
 
-        per = list(filter(lambda x: is_prime[x], per))
-        for item in per:
-            prime_ls.add(item)
-
-    return len(prime_ls)
-
-
-print(solution("011"))
+    return len([x for x in nums if isPrime(x)])
