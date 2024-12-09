@@ -1,48 +1,39 @@
 from collections import deque
 
 def solution(queue1, queue2):
-    a_que = deque(queue1)
-    b_que = deque(queue2)
+    sum1 = sum(queue1)
+    sum2= sum(queue2)
+    que1 = deque(queue1)
+    que2 = deque(queue2)
     
-    a_sum = sum(queue1)
-    b_sum = sum(queue2)
-    limit = len(queue1) + len(queue2)
-    
-    sumv = a_sum + b_sum
-    
-    if sumv % 2 == 1:
+    if (sum1 + sum2) % 2 != 0:
         return -1
     
-    count = 0
+    mid = (sum1 + sum2) // 2
     
-    move = []
+    cnt = 0
+    i = (len(que1) + len(que2)) * 2
     
-    while a_sum != b_sum:
-        if a_sum > b_sum and b_que:
-            pop_item = a_que.popleft()
-            a_sum -= pop_item
+    while (sum1 != mid or sum2 != mid) and i > -1:
+        if sum1 > sum2:
+            pop = que1.popleft()
+            que2.append(pop)
+            sum1 -= pop
+            sum2 += pop
             
-            b_que.append(pop_item)
-            b_sum += pop_item
-            move.append(1)
+        else:
+            pop = que2.popleft()
+            que1.append(pop)
+            sum2 -= pop
+            sum1 += pop    
             
-        elif a_sum < b_sum and a_que:
-            pop_item = b_que.popleft()
-            b_sum -= pop_item
-            
-            a_que.append(pop_item)
-            a_sum += pop_item
-            move.append(-1)
-            
-        if not a_que or not b_que:
-            return -1
+        i -= 1
+        cnt += 1
         
-        if len(move) > limit + 5:
-            check = move[-4:]
-            if all([check[i] != check[i+1] for i in range(3)]):
-                return -1
-            
-            
-        count += 1
-            
-    return count
+        
+    if i < 0:
+        return -1
+    
+    
+    return cnt
+    
