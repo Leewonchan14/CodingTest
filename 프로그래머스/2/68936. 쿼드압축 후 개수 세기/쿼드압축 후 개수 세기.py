@@ -1,31 +1,35 @@
-def zip(y_gab, x_gab, arr):
-    s_y, e_y = y_gab
-    s_x, e_x = x_gab
-    sumv = sum([sum(i[s_x:e_x]) for i in arr[s_y:e_y]])
-    if sumv == 0:
-        # 0으로 압축
-        return 1, 0
-    if sumv == (e_y - s_y) * (e_x - s_x):
-        # 1로 압축
-        return 0, 1
-
-    # 둘다 아닐때
-    mid_y = (s_y + e_y) // 2
-    mid_x = (s_x + e_x) // 2
-    # 왼쪽 위
-    a1, b1 = zip((s_y, mid_y), (s_x, mid_x), arr)
-    # 왼쪽 아래
-    a2, b2 = zip((mid_y, e_y), (s_x, mid_x), arr)
-    # 오른쪽 위
-    a3, b3 = zip((s_y, mid_y), (mid_x, e_x), arr)
-    # 오른쪽 아래
-    a4, b4 = zip((mid_y, e_y), (mid_x, e_x), arr)
-
-    a_ = a1 + a2 + a3 + a4
-    b_ = b1 + b2 + b3 + b4
-    return a_, b_
-
+# [0, 1] 갯수
+def recursive(arr, y, x, l):
+    if l == 1:
+        if arr[y][x] == 0:
+            return [1, 0]
+        else:
+            return [0, 1]
+    
+    temp = arr[y][x]
+    isAllSame = True
+    for ny in range(y, y + l):
+        if not isAllSame:
+            break
+        for nx in range(x, x + l):
+            if temp != arr[ny][nx]:
+                isAllSame = False
+                break
+            
+    if isAllSame and temp == 0:
+        return [1, 0]
+    elif isAllSame and temp == 1:
+        return [0, 1]
+    
+    # 1
+    r1_0, r1_1 = recursive(arr, y, x, l // 2)
+    r2_0, r2_1 = recursive(arr, y, x + l // 2, l // 2)
+    r3_0, r3_1 = recursive(arr, y + l // 2, x, l // 2)
+    r4_0, r4_1 = recursive(arr, y + l // 2, x + l // 2, l // 2)
+    
+    return [r1_0 + r2_0 + r3_0 + r4_0, r1_1 + r2_1 + r3_1 + r4_1]
+    
 
 def solution(arr):
-    return list(zip((0, len(arr)), (0, len(arr)), arr))
-
+    return recursive(arr, 0, 0, len(arr))
+    
