@@ -1,14 +1,18 @@
+from collections import deque
+
 def solution(number, k):
     stk = []
-    for num in number:
-        while stk and stk[-1] < num and k > 0:
+    for i in number:
+        while stk and k > 0 and stk[-1] < i:
             stk.pop()
             k -= 1
-        stk.append(num)
-
+        
+        stk.append(i)
+        
     if k > 0:
         stk = stk[:-k]
+        
     return str(int("".join(stk)))
-
-
-# print(solution("333222111", 2))
+    
+        
+    
