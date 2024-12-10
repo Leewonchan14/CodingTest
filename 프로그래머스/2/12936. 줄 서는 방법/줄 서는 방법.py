@@ -1,31 +1,20 @@
-import math
+def fact(n):
+    if n <= 1:
+        return 1
+
+    return n * fact(n - 1)
+
+
+def recursive(n, k, c, li):
+    f = fact(c - 1)
+    arr = [i for i in range(1, n + 1) if i not in li]
+    li.append(arr[(k - 1) // f])
+    if len(li) == n:
+        return li
+    return recursive(n, k % f, c - 1, li)
 
 
 def solution(n, k):
-    mul = 1
-    i = 1
-    ls = []
-    while mul <= k:
-        mul *= i + 1
-        i += 1
-    mul //= i
+    return recursive(n, k, n, [])
 
-    use = [False] * (n + 1)
-    if i < n:
-        ls = [i for i in range(1,  n + 1)][: -i]
-    for j in ls:
-        use[j] = True
 
-    while True:
-        t = [i for i in range(1, n + 1) if not use[i]][math.ceil(k / mul) - 1]
-        ls.append(t)
-        use[t] = True
-
-        if len(ls) == n:
-            break
-
-        k = k % mul
-        i -= 1
-        mul //= i
-
-    return ls
