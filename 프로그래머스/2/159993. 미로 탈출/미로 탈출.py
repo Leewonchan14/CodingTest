@@ -1,62 +1,59 @@
 from collections import deque
 
-def bfs(y, x, maps, end):
-    visited = [[False] * len(i) for i in maps]
-    
-    dy = [0,1,0,-1]
-    dx = [-1,0,1,0]
-    
-    que = deque()
-    visited[y][x] = True
-    que.append((y, x, 0))
+dy = [0, 1, 0, -1]
+dx = [1, 0, -1, 0]
+
+
+def isCorrectPoint(y, x, maps, visited):
+    return (
+        0 <= y < len(maps)
+        and 0 <= x < len(maps[0])
+        and maps[y][x] != "X"
+        and not visited[y][x]
+    )
+
+
+def bfs(maps, start, end):
+    visited = [[False] * len(r) for r in maps]
+    visited[start[0]][start[1]] = True
+    que = deque([(*start, 0)])
+
     while que:
-        y,x,count = que.popleft()
-        
-        if maps[y][x] == end:
-            return count
-        
+        y, x, c = que.popleft()
+        if end[0] == y and end[1] == x:
+            return c
+
         for i in range(4):
             ny = y + dy[i]
             nx = x + dx[i]
-            
-            if 0 <= ny < len(maps) and 0 <= nx < len(maps[0]) and not visited[ny][nx] \
-                and maps[ny][nx] != "X":
-                visited[ny][nx] = True
-                que.append((ny,nx, count + 1))
-                
+
+            if not isCorrectPoint(ny, nx, maps, visited):
+                continue
+
+            visited[ny][nx] = True
+            que.append((ny, nx, c + 1))
+
     return -1
-    
+
 
 def solution(maps):
-    s_point = 0,0
-    l_point = 0,0
-    e_point = 0,0
-    
-    for row in range(len(maps)):
-        for column in range(len(maps[row])):
-            if maps[row][column] == "S":
-                s_point = row, column
-                
-            if maps[row][column] == "E":
-                e_point = row, column
-                
-            if maps[row][column] == "L":
-                l_point = row, column
-                
-    sumv = 0
-                   
-    count = bfs(s_point[0], s_point[1], maps, "L")
-    if count == -1:
+    start = 0
+    lever = 0
+    end = 0
+    for r in range(len(maps)):
+        for c in range(len(maps[r])):
+            if maps[r][c] == "S":
+                start = (r, c)
+            if maps[r][c] == "L":
+                lever = (r, c)
+            if maps[r][c] == "E":
+                end = (r, c)
+
+    a = bfs(maps, start, lever)
+    if a == -1:
         return -1
-    
-    sumv += count
-    
-    count = bfs(l_point[0], l_point[1], maps, "E")
-    
-    if count == -1:
+
+    b = bfs(maps, lever, end)
+    if b == -1:
         return -1
-    
-    sumv += count
-    
-    return sumv
-    
+    return a + b
