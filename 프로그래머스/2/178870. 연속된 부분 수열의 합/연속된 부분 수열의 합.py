@@ -1,27 +1,29 @@
+def key(x):
+    a,b = x
+    return (b - a , a)
+
 def solution(sequence, k):
-    start_index = 0
-    end_index = 0
-    sumv = sequence[0]
-    ls = []
+    l = 0
+    r = 0
+    nsum = 0
+    result = []
     while True:
-        if sumv < k: 
-            end_index += 1
-            if end_index >= len(sequence):
-                break
-            sumv += sequence[end_index]
-            
-        elif sumv > k:
-            if start_index >= len(sequence):
-                break
-            sumv -= sequence[start_index]
-            start_index += 1
-            
-        if sumv == k:
-            ls.append((start_index, end_index))
-            sumv -= sequence[start_index]
-            start_index += 1
+        if nsum < k and r >= len(sequence):
+            break
         
-    ls.sort(key=lambda x : (x[1] - x[0], x[0]))
-    
-    return list(ls[0])
+        
+        if nsum < k:
+            nsum += sequence[r]
+            r += 1
+        elif nsum > k:
+            nsum -= sequence[l]
+            l += 1
+        
+        if nsum == k:
+            result.append((l, r))
+            nsum -= sequence[l]
+            l += 1
             
+    result.sort(key=key)
+    return [result[0][0], result[0][1] - 1]
+    
