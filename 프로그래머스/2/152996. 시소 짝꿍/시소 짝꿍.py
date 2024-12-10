@@ -1,30 +1,52 @@
-import itertools
+def isPair(a, b):
+    if a == b:
+        return True
+
+    # 3, 4
+    if min(a, b) * 4 == max(a, b) * 3:
+        return True
+
+    # 2, 4
+    if min(a, b) * 2 == max(a, b):
+        return True
+
+    # 2, 3
+    if min(a, b) * 3 == max(a, b) * 2:
+        return True
+
+    return False
+
+
+def recursive(n, li, result):
+    if len(li) == 2:
+        result.append(li[:])
+        return
+
+    for i in range(n):
+        if not li or li[-1] > i:
+            li.append(i)
+            recursive(n, li, result)
+            li.pop()
+
 
 def solution(weights):
-    count_sort = {}
-    for w in weights:
-        count_sort[w] = count_sort.get(w, 0) + 1
-        
-    total = 0
-    for weight, count in count_sort.items():
-        total += count * (count - 1)
-        
-        ls = []
-    
-        ls.append(weight * 2)
-        if weight % 2 == 0:
-            _ls = [weight // 2 * 3, weight // 2]
-            ls = sum([ls, _ls], [])
+    count = {}
+    for i in weights:
+        count[i] = count.get(i, 0) + 1
 
-        if weight % 3 == 0:
-            _ls = [weight // 3 * 2, weight // 3 * 4]
-            ls = sum([ls, _ls], [])
+    print(count)
 
-        if weight % 4 == 0:
-            ls.append(weight // 4 * 3)
-        
-        for w in ls:
-            if w in count_sort:
-                total += count * count_sort[w]
-    
-    return total // 2
+    keys = list(count.keys())
+
+    cnt = 0
+    for i in range(len(keys)):
+        for j in range(i, len(keys)):
+            if i == j:
+                cnt += (count[keys[i]] ** 2 - count[keys[i]]) // 2
+
+            elif isPair(keys[i], keys[j]):
+                cnt += count[keys[i]] * count[keys[j]]
+
+    return cnt
+
+
