@@ -1,35 +1,39 @@
+from collections import deque
 import math
 
 
-def fuc(arrayA, arrayB):
-    gcd = arrayA[0]
-    for i in arrayA:
-        gcd = math.gcd(gcd, i)
+def yack(n):
+    que = deque([])
+    i = math.ceil(math.sqrt(n))
+    if i == math.sqrt(n):
+        que.append(i)
+    i -= 1
+    while i > 0:
+        if n % i == 0:
+            que.appendleft(i)
+            que.append(n // i)
+        i -= 1
 
-    gcd_primes = []
+    return que
 
-    index = 1
-    while index * index <= gcd:
-        if gcd % index == 0:
-            gcd_primes.append(index)
 
-            if index * index != gcd:
-                gcd_primes.append(gcd // index)
-        index += 1
+def sol(arrA, arrB):
+    aGcd = arrA[0]
+    for a in arrA:
+        aGcd = math.gcd(a, aGcd)
 
-    gcd_primes.sort(reverse=True)
+    maxv = 0
+    for ay in yack(aGcd):
+        if not any(b % ay == 0 for b in arrB):
+            maxv = max(maxv, ay)
 
-    for i in gcd_primes:
-        if all([item % i != 0 for item in arrayB]):
-            return i
-
-    return 0
+    return maxv
 
 
 def solution(arrayA, arrayB):
-    a = fuc(arrayA, arrayB)
-    b = fuc(arrayB, arrayA)
+    a = sol(arrayA, arrayB)
+    b = sol(arrayB, arrayA)
     return max(a, b)
 
 
-# print(solution([14, 35, 119], [18, 30, 102]))
+# solution([10, 17], [5, 20])
