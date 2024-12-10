@@ -1,29 +1,34 @@
-def count(n, rel, visited, count_dic):
-    visited[n] = True
-    if not rel[n]:
-        count_dic[n] = 1
-        return 1
+def isEqual(a, b):
+    return (a[0] == b[0] and a[1] == b[1]) or (a[0] == b[1] and a[1] == b[0])
 
-    sumv = 0
-    for re in rel[n]:
-        if not visited[re]:
-            sumv += count(re, rel, visited, count_dic)
 
-    count_dic[n] = sumv + 1
-    return sumv + 1
+def dfs(tree, n, start, visited, nothing):
+    cnt = 1
+    visited[start] = True
+    for i in tree[start]:
+        if visited[i] or isEqual([start, i], nothing):
+            continue
+
+        visited[i] = True
+        cnt += dfs(tree, n, i, visited, nothing)
+
+    return cnt
 
 
 def solution(n, wires):
-    rel = {i + 1: [] for i in range(n)}
-    visited = [False] * (n + 1)
-    for wire in wires:
-        a, b = wire
-        rel[a].append(b)
-        rel[b].append(a)
-    count_dic = {}
-    count(1, rel, visited, count_dic)
+    tree = {i: [] for i in range(n + 1)}
+    for a, b in wires:
+        tree[a].append(b)
+        tree[b].append(a)
 
-    count_ls = sorted(count_dic.items(), key=lambda x: abs(2 * x[1] - len(count_dic)))
-    return abs(count_ls[0][1] - (len(count_dic) - count_ls[0][1]))
+    c = float("inf")
+    for nothing in wires:
+        visited = [False] * (n + 1)
+        a = dfs(tree, n, nothing[0], visited, nothing)
+        b = dfs(tree, n, nothing[1], visited, nothing)
+
+        c = min(abs(a - b), c)
+
+    return c
 
 
