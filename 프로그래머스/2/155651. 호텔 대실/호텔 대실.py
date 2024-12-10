@@ -1,27 +1,38 @@
-def get_time(time):
-    time = time.split(":")
-    return int(time[0]) * 60 + int(time[1])
+from collections import deque
+
+
+def toTime(time):
+    h, m = map(int, time.split(":"))
+    return h * 60 + m
+
+
+def checkRoom(stk, rest_room, time):
+    new_stk = []
+    for t in stk:
+        if t <= time:
+            rest_room += 1
+        else:
+            new_stk.append(t)
+
+    return new_stk, rest_room
+
+def useRoom(time, rooms, end):
+    new_rooms = [t for t in rooms if t > time]
+    new_rooms.append(end)
+    return new_rooms
 
 
 def solution(book_time):
-    rooms = []
     book_time.sort(key=lambda x: (x[0], x[1]))
-    now_time = get_time("00:00")
-    
-    for i in book_time:
-        now_time = get_time(i[0])
+    time = 0
+    rooms = []
+    maxr = 0
+    for s, e in book_time:
+        time = toTime(s)
+        rooms = useRoom(time, rooms, toTime(e) + 10)
+        maxr = max(maxr, len(rooms))
 
-        # 사람들 내보내기 (모든 room의 끝나는 시간이 현재 시간보다 작은 경우)
-        for j in range(len(rooms)):
-            if rooms[j] and get_time(rooms[j][1]) <= now_time - 10:
-                rooms[j] = False
+    return maxr
 
-        # 방 배정하기
-        for j in range(len(rooms)):
-            if not rooms[j]:
-                rooms[j] = i
-                break
-        else:
-            rooms.append(i)
 
-    return len(rooms)
+# solution([["09:10", "10:10"], ["10:20", "12:20"]])
