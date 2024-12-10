@@ -1,16 +1,23 @@
+from collections import defaultdict, deque
+
 def solution(N, road, K):
-    l = [[float('inf')] * (N + 1) for i in range(N + 1)]
-        
+    dic = defaultdict(list)
     for a,b,c in road:
-        l[a][b] = min(l[a][b], c)
-        l[b][a] = min(l[b][a], c)
+        dic[a].append((b, c))
+        dic[b].append((a, c))
         
-    for i in range(1, N + 1):
-        l[i][i] = 0
+    
+    coasts = [float('inf')] * (N + 1)
+    coasts[1] = 0
+    que = deque([])
+    que.append((1, 0))
+    
+    while que:
+        n, coast = que.popleft()
+        for nn, c in dic[n]:
+            if c + coast <= coasts[nn]:
+                coasts[nn] = c + coast
+                que.append((nn, c + coast))
         
-    for k in range(1, N + 1):
-        for a in range(1, N + 1):
-            for b in range(1, N + 1):
-                l[a][b] = min(l[a][b], l[a][k] + l[k][b])
-                
-    return len([i for i in l[1] if i <= K])
+    return len([c for c in coasts if c <= K])
+    
