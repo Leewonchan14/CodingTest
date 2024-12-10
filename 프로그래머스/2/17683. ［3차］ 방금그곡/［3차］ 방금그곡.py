@@ -1,41 +1,53 @@
-keys = "C# D# F# G# A# E# B#".split()
-values = "c d f g a e b".split()
-mapper = dict(zip(keys, values))
+import sys
+
+sys.setrecursionlimit(10 ** 9)
+
+from collections import deque
+
+muliC = "C,C#,D,D#,E,F,F#,G,G#,A,A#,B"
+muliC = muliC.split(",")
 
 
-def to_music(music):
-    for k in mapper.keys():
-        music = music.replace(k, mapper[k])
-        
-    return music
-
-def to_minute(s):
-    h, m = map(int,s.split(":"))
+def toTime(time):
+    h, m = map(int, time.split(":"))
     return h * 60 + m
-    
+
+
+def timeGap(a, b):
+    return abs(toTime(a) - toTime(b))
+
+
+def toMusicList(m, li):
+    m = list(m)
+    while m:
+        s = m.pop()
+        if s == "#":
+            s = m.pop().lower()
+        li.appendleft(s)
+        
+    return li
+
+
+def toStartEndGapTitleMuli(m):
+    a, b, c, d = m.split(",")
+    return toTime(a), timeGap(a, b), c, toMusicList(d, deque())
+
 
 def solution(m, musicinfos):
-    m = to_music(m)
-    
-    ls = []
-    
-    for m_ in musicinfos:
-        start, end, title, music = m_.split(",")
-        gap_minute = to_minute(end) - to_minute(start)
-        music = to_music(music)
-        length = len(music)
+    m = "".join(toMusicList(m, deque()))
+    result = []
+    for i in musicinfos:
+        start, gap, title, muli = toStartEndGapTitleMuli(i)
         
-        repeat = gap_minute // length
-        div = gap_minute % length
-        
-        melody = music * repeat + music[:div]
-        
-        if m in melody:
-            ls.append((-gap_minute, len(ls), title))
-            
-    ls.sort(key=lambda x: x[0])
-    if ls:
-        return ls[0][2]
-    
-    return "(None)"
-            
+        if m in ("".join(muli) * gap)[:gap]:
+            result.append((-gap, start, title))
+
+    result.sort()
+
+    if not result:
+        return "(None)"
+
+    return result[0][2]
+
+
+# solution("ABCDEFG", ["12:00,12:14,HELLO,CDEFGAB", "13:00,13:05,WORLD,ABCDEF"])
