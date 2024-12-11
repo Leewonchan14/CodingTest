@@ -1,54 +1,48 @@
-# time to hour:minute
-def tth(time: int):
-    return time // 60, time % 60
+from collections import deque
 
 
-# hour:minute to time
-def htt(hour: tuple):
-    return hour[0] * 60 + hour[1]
+def toTime(s):
+    h, m = map(int, s.split(":"))
+    return h * 60 + m
 
 
 def solution(plans):
-    stk = []
-    ret = []
-    pre_time = 0
-    plans.sort(key=lambda x: (x[1]))
-    for i in plans:
-        subject, start, playtime = i
-        playtime = int(playtime)
-        now_start_hour, now_start_minute = map(int, start.split(":"))
+    plans.sort(key=lambda x: toTime(x[1]))
+    result = []
+    plans = deque(plans)
+    title, t, gap = plans.popleft()
+    stop = [(title, int(gap))]
+    time = 0
+    pretime = toTime(t)
+    for title, t, gap in plans:
+        gap = int(gap)
+        time = toTime(t)
 
-        now_work = {
-            "subject": subject,
-            "start": (now_start_hour, now_start_minute),
-            "playtime": playtime
-        }
+        flow = time - pretime
 
-        # 잠시 진행 과제에 넣어주기
-        if len(stk) == 0:
-            stk.append(now_work)
-            pre_time = now_work["start"]
-            continue
+        while stop and flow > 0:
+            sT, sGap = stop.pop()
+            if sGap > flow:
+                stop.append((sT, sGap - flow))
+                break
+            else:  # flow >= sGap
+                flow -= sGap
+                result.append(sT)
 
-        # 흐른 시간
-        flow_time = htt(now_work["start"]) - htt(pre_time)
-        pre_time = now_work["start"]
+        stop.append((title, gap))
+        pretime = time
 
-        # 흐른 시간안에 과제들 몽땅 해치우기
-        while len(stk) > 0 and flow_time >= stk[-1]["playtime"]:
-            pop = stk.pop()
-            flow_time -= pop["playtime"]
-            ret.append(pop["subject"])
+    while stop:
+        result.append(stop.pop()[0])
 
-        # 남은 flow_time 처리하기
-        if len(stk) > 0:
-            stk[-1]["playtime"] -= flow_time
+    return result
 
-        # 밀린 과제 끝났다면 지금 과제 넣어 주기
-        stk.append(now_work)
 
-    # 나머지 stk 내용 마무리 하기
-    while len(stk) != 0:
-        ret.append(stk.pop()["subject"])
-
-    return ret
+# solution(
+#     [
+#         ["science", "12:40", "50"],
+#         ["music", "12:20", "40"],
+#         ["history", "14:00", "30"],
+#         ["computer", "12:30", "100"],
+#     ]
+# )
