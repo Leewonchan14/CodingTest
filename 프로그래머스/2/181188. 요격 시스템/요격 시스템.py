@@ -1,13 +1,17 @@
+from collections import deque
+
+
 def solution(targets):
-    shot = 0
-    count = 0
-    targets = sorted(targets, key=lambda v : (v[1], v[0]))
+    targets.sort(key=lambda x: (x[1], x[0]))
+    shoot = []
     
-    for start, end in targets:
-        if start < shot < end :
+    for s,e in targets:
+        if shoot and s < shoot[-1] < e:
             continue
-        
-        shot = end - 0.5
-        print(shot)
-        count += 1
-    return count
+            
+        shoot.append(e - 0.5)
+    
+    return len(shoot)
+
+
+
