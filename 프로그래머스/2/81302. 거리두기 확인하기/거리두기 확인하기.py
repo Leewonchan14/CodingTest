@@ -1,43 +1,63 @@
 from collections import deque
-def bfs(y,x,places):
-    visited = [[False] * len(places) for _ in range(len(places))]
-    dy = [0,-1,0,1]
-    dx = [1,0,-1,0]
+
+
+def isGoodPoint(y, x, places):
+    return 0 <= y < len(places) and 0 <= x < len(places[0]) and places[y][x] != "X"
+
+
+dy = [1, 0, -1, 0]
+dx = [0, -1, 0, 1]
+
+
+def isGap2In(places, start, end):
+    y, x = start
     que = deque()
-    visited[y][x] = True
-    que.append((y,x,0))
+    visited = set()
+    que.append((y, x, 0))
+    visited.add((y, x))
+
     while que:
-        y,x,cnt = que.popleft()
-        if 1 <= cnt <= 2 and places[y][x] == "P":
-            return 0
-        
+        y, x, cnt = que.popleft()
+
+        if end[0] == y and end[1] == x and cnt <= 2:
+            return True
+
+        if cnt > 2:
+            continue
+
         for i in range(4):
             ny = y + dy[i]
             nx = x + dx[i]
-            if 0 <= ny < len(places) and 0 <= nx < len(places[0]):
-                if not visited[ny][nx] and places[ny][nx] != "X":
-                    visited[ny][nx] = True
-                    que.append((ny,nx,cnt+1))
-        
-    return 1
+            if not isGoodPoint(y, x, places):
+                continue
+
+            visited.add((ny, nx))
+            que.append((ny, nx, cnt + 1))
+
+    return False
+
+
+def points(places):
+    result = []
+
+    for r in range(len(places)):
+        for c in range(len(places[r])):
+            if places[r][c] == "P":
+                result.append((r, c))
+
+    return result
+
+
+def allGood(places):
+    pts = points(places)
+
+    for i in range(len(pts)):
+        for j in range(i + 1, len(pts)):
+            if isGap2In(places, pts[i], pts[j]):
+                return False
+
+    return True
+
 
 def solution(places):
-    ls = []
-    for li in places:
-        for r in range(len(li)):
-            flag = False
-            for c in range(len(li[0])):
-                rs = bfs(r,c,li)
-                if li[r][c] == "P" and rs == 0:
-                    ls.append(0)
-                    flag = True
-                    break
-            if flag:
-                break
-        if not flag:
-            ls.append(1)
-    
-                    
-    return ls
-
-    
+    return [1 if allGood(p) else 0 for p in places]
