@@ -1,13 +1,16 @@
-def move(n, start, end, other, ls):
+import sys
+
+sys.setrecursionlimit(10 ** 9)
+
+def recursion(n, start, end, mid, li):
     if n == 1:
-        ls.append([start,end])
-        return
+        li.append([start, end])
+        return li
     
-    move(n - 1, start, other, end, ls)
-    move(1, start, end, other, ls)
-    move(n - 1, other, end, start, ls)
+    li = recursion(n - 1, start, mid, end, li)
+    li = recursion(1, start, end, mid, li)
+    li = recursion(n - 1, mid, end, start, li)
+    return li
 
 def solution(n):
-    ls = []
-    move(n, 1, 3, 2, ls)
-    return ls
+    return recursion(n, 1, 3, 2, [])
