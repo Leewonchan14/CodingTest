@@ -1,29 +1,37 @@
-columns = {}
-dig_x = {}
-dig_y = {}
-cnt = [0]
-    
-def track(num, M):
-    if num == M:
-        cnt[0] += 1
+def isGood(r, c, li1, li2):
+    # 모든 r + c 값이 같지 않아야함
+    # 모든 r - c 값이 같지 않아야함
+    # 모든 r,c 값이 같지 않아야함
+    if (r + c) in li1 or (r - c) in li2:
+        return False
+
+    return True
+
+
+result = [0]
+
+
+def recursive(n, row, li1, li2, columns, cnt):
+    if row == n:
+        result[0] += 1
         return
-    
-    r = num
-    
-    for c in range(M):
-        if c not in columns and r + c not in dig_x and r - c not in dig_y:
-            columns[c] = 0
-            dig_x[r+c] = 0
-            dig_y[r-c] = 0
-            track(num + 1, M)
-            columns.pop(c)
-            dig_x.pop(r+c)
-            dig_y.pop(r-c)
-            
+
+    for col in range(n):
+        if col in columns:
+            continue
+        if isGood(row, col, li1, li2):
+            columns.add(col)
+            li1.add(row + col)
+            li2.add(row - col)
+
+            recursive(n, row + 1, li1, li2, columns, cnt)
+            columns.remove(col)
+            li1.remove(row + col)
+            li2.remove(row - col)
+
 
 def solution(n):
-    track(0, n)
-    
-    return cnt[0]
-    
-    
+    recursive(n, 0, set(), set(), set(), 0)
+    return result[0]
+
+
