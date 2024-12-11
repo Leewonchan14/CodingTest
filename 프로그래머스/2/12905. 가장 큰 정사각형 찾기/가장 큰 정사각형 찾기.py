@@ -1,17 +1,16 @@
-def solution(board):
-    dr = [-1 , 0 , -1]
-    dc = [0, -1, -1]
-    rows = len(board)
-    columns = len(board[0])
-    maxv = max(0, board[0][0])
-    for r in range(1, rows):
-        for c in range(1, columns):
-            if board[r][c] == 1:
-                    
-                minv = min([board[r + dr[i]][c + dc[i]] for i in range(3)])
-                board[r][c] = minv + 1
+def getMin(y, x, dp):
+    return min(dp[y - 1][x], dp[y][x  - 1], dp[y - 1][x - 1])
+    
 
-            maxv = max(board[r][c],maxv)
+def solution(board):
+    dp = [[0] * (len(board[0]) + 1) for r in range(len(board) + 1)]
+    for r in range(1, len(dp)):
+        for c in range(1, len(dp[r])):
+            if board[r - 1][c - 1] == 0:
+                continue
                 
-    return maxv ** 2
-                
+            dp[r][c] = getMin(r, c, dp) + 1
+            
+    return max([max(i) for i in dp]) ** 2
+    
+            
