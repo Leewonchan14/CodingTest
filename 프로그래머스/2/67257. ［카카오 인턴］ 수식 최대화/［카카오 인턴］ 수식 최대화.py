@@ -1,59 +1,100 @@
-import itertools
-from collections import deque
+import sys
+
+sys.setrecursionlimit(10**9)
+
+spt = list("+-*")
 
 
-def calcul(after_operation, op):
-    b = after_operation.pop()
-    a = after_operation.pop()
-    if op == "+":
-        return a + b
-    elif op == "-":
-        return a - b
-    else:
+def cal(o, a, b):
+    a = int(a)
+    b = int(b)
+    if o == "*":
         return a * b
 
+    if o == "+":
+        return a + b
 
-def solution(expression: str):
+    return a - b
+
+
+def order(li, result):
+    if len(li) == 3:
+        result.append(li[:])
+        return result
+
+    for s in spt:
+        if s not in li:
+            li.append(s)
+            result = order(li, result)
+            li.pop()
+
+    return result
+
+
+def split(exp, li):
+    if not exp:
+        return li
+
+    i = 0
+    while i < len(exp) and exp[i] not in spt:
+        i += 1
+
+    li.append(exp[:i])
+    if i < len(exp) and exp[i] in spt:
+        li.append(exp[i])
+        i += 1
+
+    return split(exp[i:], li)
+
+
+def postorder(expression, orders):
     stk = []
-    answer_list = []
-    # 모든 우선순위를 조사
-    for rank in itertools.permutations(["*", "+", "-"], 3):
-        num = ""
+    new_exp = []
+    for e in expression:
+        if e not in spt:
+            new_exp.append(e)
+            continue
 
-        after_operation = []
+        if not stk:
+            stk.append(e)
+            continue
 
-        que = deque(expression)
+        while stk and orders.index(stk[-1]) <= orders.index(e):
+            new_exp.append(stk.pop())
 
-        while len(que) != 0:
-            s = que.popleft()
-            # 숫자라면 num에 추가 하고 다음 문자 확인
-            if s not in rank:
-                num += s
-                continue
+        stk.append(e)
 
-            # 연산자라면 숫자로 만들어주고 후위 에 넣어준다.
-            after_operation.append(int(num))
-            num = ""
+    while stk:
+        new_exp.append(stk.pop())
 
-            # stk 이 비어 있지 않고 지금 나온게 더 낮거나 같다면
-            while len(stk) != 0 and rank.index(stk[-1]) <= rank.index(s):
-                after_operation.append(calcul(after_operation, stk.pop()))
+    return new_exp
 
-            # stk 이 비어 있거나
-            # 우선 순위가 지금 나온게 더 높다면 그냥 넣어준다.
-            stk.append(s)
 
-        # 마지막 숫자 넣기
-        after_operation.append(int(num))
+def calculate(expression, orders):
+    post = postorder(expression, orders)
+    stk = []
+    for p in post:
+        if p not in spt:
+            stk.append(p)
+            continue
 
-        # 모든 연산 하기
-        while len(stk) != 0:
-            after_operation.append(calcul(after_operation, stk.pop()))
+        b = stk.pop()
+        a = stk.pop()
+        stk.append(cal(p, a, b))
 
-        # 최종 결과의 절댓값을 answer_list에 넣기    
-        answer_list.append(abs(after_operation[0]))
+    return stk[0]
 
-    # 모든값을 정렬후  
-    answer_list.sort()
-    # 최댓값을 return
-    return answer_list[-1]
+
+def solution(expression):
+    orders = order([], [])
+
+    maxv = 0
+    for o in orders:
+        key = calculate(split(expression, []), o)
+        maxv = max(maxv, abs(key))
+
+    return maxv
+
+
+# solution("100-200*300-500+20")
+# print(calculate(split("100-200*300-500+20", []), ["*", "+", "-"]))
