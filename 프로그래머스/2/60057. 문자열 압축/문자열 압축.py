@@ -1,34 +1,36 @@
 from collections import deque
 
 
+def zip(li):
+    que = deque(li)
+
+    result = []
+
+    while que:
+        s = que.popleft()
+        cnt = 1
+        while que and que[0] == s:
+            que.popleft()
+            cnt += 1
+
+        item = str(cnt if cnt > 1 else "") + s
+        result.append(item)
+
+    return len("".join(result))
+
+
+def split(s, i):
+    result = []
+    for j in range(0, len(s), i):
+        result.append(s[j : j + i])
+    return result
+
+
 def solution(s):
-    rs = []
-    for i in range(1, len(s)):
-        spl = []
-        for j in range(0, len(s), i):
-            spl.append(s[j:j + i])
+    minv = float("inf")
+    for i in range(1, len(s) + 1):
+        minv = min(zip(split(s, i)), minv)
 
-        count = 0
-        index = 0
+    return minv
 
-        ls = []
-        temp = spl[index]
-        while True:
-            if index < len(spl) and temp == spl[index]:
-                count += 1
-                index += 1
-                continue
-
-            ls.append((str(count) if count != 1 else "") + temp)
-            count = 0
-
-            if index >= len(spl):
-                break
-
-            temp = spl[index]
-
-        rs.append(len("".join(ls)))
-
-    rs.sort()
-    return rs[0] if rs else len(s)
 
