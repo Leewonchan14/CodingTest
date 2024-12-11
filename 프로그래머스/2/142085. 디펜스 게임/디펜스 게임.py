@@ -1,33 +1,33 @@
-from collections import deque
-from queue import PriorityQueue
+import heapq
+
+
+def recursion(n, k, enemy, start):
+    heap = []
+    while True:
+        if start >= len(enemy):
+            return start
+
+        heapq.heappush(heap, -enemy[start])
+
+        if n - enemy[start] >= 0:
+            n -= enemy[start]
+            start += 1
+            continue
+
+        n -= enemy[start]
+        while k > 0 and n < 0 and heap:
+            n -= heapq.heappop(heap)
+            k -= 1
+
+        if k <= 0 and n < 0:
+            return start
+
+        start += 1
 
 
 def solution(n, k, enemy):
-    clear_enemy = PriorityQueue()
-    enemy = deque(enemy)
-    cnt = 0
-    while enemy:
-        en = enemy.popleft()
-        if n >= en:
-            n -= en
-            clear_enemy.put(-en)
-            cnt += 1
-            continue
-            
-        if n < en and k <= 0:
-            break
+    return recursion(n, k, enemy, 0)
 
-        if n < en and k > 0:
-            clear_enemy.put(-en)
-            while n < en and k > 0 and clear_enemy:
-                k -= 1
-                safe = -clear_enemy.get()
-                n += safe
 
-            if n < en:
-                break
-
-            n -= en
-            cnt += 1
-
-    return cnt
+# print(solution(2, 4, [3, 3, 3, 3]))
+# solution(7, 3, [4, 2, 4, 5, 3, 3, 1])
