@@ -1,36 +1,49 @@
-from itertools import combinations
+def allCombi(relation, k, li, result):
+    if len(li) == k:
+        result.append(set(li[:]))
+        return result
+
+    for i in range(len(relation[0])):
+        if not li or i > li[-1]:
+            li.append(i)
+            result = allCombi(relation, k, li, result)
+            li.pop()
+
+    return result
+
+
+def isKey(com, relation):
+    com = list(com)
+    s1 = set([(*[r[c] for c in com],) for r in relation])
+    return len(s1) == len(relation)
+
+
+def isGoodCombi(com, keys):
+    for k in keys:
+        if all([k1 in com for k1 in k]):
+            return False
+
+    return True
+
+
 def solution(relation):
-    columns = len(relation[0])
-    rows = len(relation)
+    keys = set()
+    for i in range(1, len(relation[0]) + 1):
+        combi = allCombi(relation, i, [], [])
+        for c in combi:
+            if isGoodCombi(c, keys) and isKey(c, relation):
+                keys.add(tuple(c))
 
-    answers = []
+    return len(keys)
 
-    for i in range(1,columns+1):
-        candidates = list(combinations(range(columns),i))
 
-        for candidate in candidates:
-            tples = []
-            for row in relation:
-                tple =[]
-                for idx in candidate:
-                    tple.append(row[idx])
-
-                if tple not in tples:
-                    tples.append(tple)
-
-            if len(tples) == rows:
-                answers.append(set(candidate))
-
-    answers_ = answers.copy()
-
-    for i in range(len(answers)):
-        for j in range(i+1,len(answers)):
-            key1 = answers[i]
-            key2 = answers[j]
-            if key1.issubset(key2):
-                try:
-                    answers_.remove(key2)
-                except:
-                    continue
-
-    return len(answers_)
+# solution(
+#     [
+#         ["100", "ryan", "music", "2"],
+#         ["200", "apeach", "math", "2"],
+#         ["300", "tube", "computer", "3"],
+#         ["400", "con", "computer", "4"],
+#         ["500", "muzi", "music", "3"],
+#         ["600", "apeach", "music", "2"],
+#     ]
+# )
