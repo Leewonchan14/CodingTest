@@ -1,15 +1,37 @@
+import sys
+
+sys.setrecursionlimit(10**9)
+
+
+def recursion(n, li):
+    i = 0
+    while n != 1:
+        pre = n
+        i += 1
+        if n % 2 == 0:
+            n //= 2
+        else:
+            n *= 3
+            n += 1
+
+        li.append((pre + n) / 2)
+
+    return li, i
+
+
 def solution(k, ranges):
-    dp = [0]
-    while k != 1:
-        nk = (k * 3 + 1) if k % 2 == 1 else k // 2
-        area = nk + k
-        dp.append((dp[-1] + area) if dp else area)
-        k = nk
-        
-    r = []
-    for a, b in ranges:
-        if len(dp) - 1 + b < a:
-            r.append(-1)
+    li, n = recursion(k, [])
+    
+    answer = []
+    for a,b in ranges:
+        b = n + b
+        if a > b:
+            answer.append(-1)
             continue
-        r.append((dp[len(dp) - 1 + b] - dp[a]) / 2)
-    return r
+        answer.append(sum(li[a:b]))
+        
+    return answer
+    
+
+
+
