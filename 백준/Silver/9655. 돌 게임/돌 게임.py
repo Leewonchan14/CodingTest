@@ -3,10 +3,10 @@ key = [0, "f", "b", "f", "b"]
 
 
 def recur(n, who):
-    if n < len(key):
-        return key[n] == who
+    while n >= len(key):
+        n -= 4
 
-    return recur(n - 4, who)
+    return key[n] == who
 
 
 print("SK" if recur(int(input()), "f") else "CY")
