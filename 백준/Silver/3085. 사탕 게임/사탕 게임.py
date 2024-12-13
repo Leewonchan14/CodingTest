@@ -5,30 +5,23 @@ input = sys.stdin.readline
 
 def eat(maps):
     maxv = 0
-    for r in range(len(maps)):
-        stk = []
-        for c in range(len(maps)):
-            if not stk or stk[-1][1] != maps[r][c]:
-                stk.append([1, maps[r][c]])
-                continue
-
-            if stk[-1][1] == maps[r][c]:
-                stk[-1][0] += 1
-
-        maxv = max(maxv, max([i for i, v in stk]))
-
-    for c in range(len(maps)):
-        stk = []
-        for r in range(len(maps)):
-            if not stk or stk[-1][1] != maps[r][c]:
-                stk.append([1, maps[r][c]])
-                continue
-
-            if stk[-1][1] == maps[r][c]:
-                stk[-1][0] += 1
-
-        maxv = max(maxv, max([i for i, v in stk]))
-
+    for i in range(len(maps)):
+        # row
+        cnt = 1
+        for c in range(1, len(maps)):
+            if maps[i][c] != maps[i][c - 1]:
+                cnt = 1
+            else:
+                cnt += 1
+                maxv = max(cnt, maxv)
+                
+        cnt = 1
+        for r in range(1, len(maps)):
+            if maps[r][i] != maps[r - 1][i]:
+                cnt = 1
+            else:
+                cnt += 1
+                maxv = max(cnt, maxv)
     return maxv
 
 
