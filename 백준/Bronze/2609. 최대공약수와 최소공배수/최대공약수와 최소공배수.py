@@ -1,13 +1,3 @@
-def lcm(a, b):
-    aa = a
-    bb = b
-    while a != b:
-        if aa < bb:
-            aa += a
-        else:
-            bb += b
-    return aa
-
 def gcd(a, b):
     n = min(a, b)
     while a % n != 0 or b % n != 0:
