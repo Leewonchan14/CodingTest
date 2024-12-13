@@ -1,15 +1,20 @@
-n = int(input())
-li = [True for _ in range(1001)]
-li[0] = False
-li[1] = False
-for i in range(2, 1001):
-    if li[i] == True:
-        for j in range(i*2,1001,i):
-            li[j] = False
+import math
 
-li_ = list(map(int, input().split()))
-count = 0
-for i in li_:
-    if li[i]:
-        count+=1
-print(count)
+
+def isPrime(n):
+    if n == 1 or n == 0:
+        return False
+    if n == 2:
+        return True
+
+    for i in range(2, math.floor(n**0.5) + 1):
+        if n % i == 0:
+            return False
+
+    return True
+
+
+tc = int(input())
+
+li = map(int, input().split())
+print(len([i for i in li if isPrime(i)]))
