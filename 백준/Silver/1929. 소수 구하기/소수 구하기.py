@@ -1,25 +1,16 @@
-cache = {0: False, 1: False, 2: True}
+def che():
+    maxv = 10 ** 6
+    dp = [True] * (maxv + 1)
+    dp[0] = False
+    dp[1] = False
+    for i in range(2, maxv + 1):
+        if dp[i]:
+            for j in range(i + i, maxv + 1, i):
+                dp[j] = False
+    return dp
 
-
-def is_prime(_n):
-    if _n < 1:
-        return False
-
-    if _n in cache:
-        return cache[_n]
-
-    index = 2
-    while True:
-        if _n % index == 0:
-            cache[_n] = False
-            return cache[_n]
-        index += 1
-        if index ** 2 > _n:
-            cache[_n] = True
-            return cache[_n]
-
-
-a,b = map(int, input().split())
-for i in range(a,b + 1):
-    if is_prime(i):
+dp = che()
+a, b = map(int, input().split())
+for i in range(a, b + 1):
+    if dp[i]:
         print(i)
