@@ -1,23 +1,17 @@
-import sys
-input = sys.stdin.readline
+keys = [int(input()) for i in range(9)]
 
-ls = [int(input()) for i in range(9)]
-sumv = sum(ls)
-re = []
-for i in ls:
-    if re:
+flag = False
+a,b = None, None
+for i in range(9):
+    if flag:
         break
-    for j in ls:
-        if i == j :
-            continue
-        if sumv - i - j == 100:
-            re.append(i)
-            re.append(j)
-            break;
-            
-ls = [i for i in ls if i not in re]
+    for j in range(i + 1, 9):
+        if sum(keys) - keys[i] - keys[j] == 100:
+            flag = True
+            a,b = i,j
+            break
 
-ls.sort()
-
-for i in ls:
+keys = [v for i,v in enumerate(keys) if i != a and i != b]
+keys.sort()
+for i in keys:
     print(i)
