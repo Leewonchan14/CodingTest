@@ -1,22 +1,15 @@
-import sys
-
-input = sys.stdin.readline
-
-n, k = map(int, input().split())
-
-rs = []
-check = [False] * (n + 1)
-
-
-def back(n, k1):
-    if k1 == 0:
-        print(" ".join(map(str, rs)))
+def recur(n, m, li):
+    if len(li) == m:
+        print(" ".join([str(i) for i in li]))
         return
-
+    
     for i in range(1, n + 1):
-        rs.append(i)
-        back(n, k1 - 1)
-        rs.pop()
+        li.append(i)
+        recur(n, m, li)
+        li.pop()
 
-
-back(n, k)
+def main(n, m):
+    recur(n, m, [])
+    
+n, m = map(int, input().split())
+main(n, m)
