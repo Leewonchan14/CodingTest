@@ -3,7 +3,9 @@ import sys
 input = sys.stdin.readline
 
 
-def recur(arr, li, maxv):
+def recur(arr, li, maxv, sumv):
+    maxv = max(sumv, maxv)
+
     for i in range(len(arr)):
         hang, money = arr[i]
         if (i + hang - 1) >= len(arr):
@@ -15,14 +17,14 @@ def recur(arr, li, maxv):
                 continue
 
         li.append((i, i + arr[i][0] - 1))
-        maxv = recur(arr, li, maxv)
+        maxv = recur(arr, li, maxv, sumv + money)
         li.pop()
 
-    return max(sum([arr[i][1] for i, _ in li]), maxv)
+    return maxv
 
 
 def main(arr):
-    maxv = recur(arr, [], 0)
+    maxv = recur(arr, [], 0, 0)
     print(maxv)
 
 
