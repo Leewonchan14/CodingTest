@@ -16,7 +16,10 @@ def recur(arr, li, maxv, sumv):
             if i <= end:
                 continue
 
-        li.append((i, i + arr[i][0] - 1))
+        start = i
+        end = i + hang - 1
+
+        li.append((start, end))
         maxv = recur(arr, li, maxv, sumv + money)
         li.pop()
 
