@@ -1,32 +1,42 @@
-def solution(n):
-    cnt = [0]
-    column = set()
-    digit_x = set()
-    digit_y = set()
+def main(n):
+    cols = [False] * n
+    # +
+    rup = [False] * (n * 2)
+    # -
+    rdown = [False] * (n * 2)
 
-    def track(num):
-        if num == n:
-            cnt[0] += 1
+    li = []
+    cnt = 0
+
+    def recur(r):
+        nonlocal cnt
+        if len(li) == n:
+            cnt += 1
             return
 
-        r = num
+        for c in range(n):
+            if cols[c]:
+                continue
 
-        for c in range(0, n):
-            if c not in column and r - c not in digit_x and r + c not in digit_y:
-                column.add(c)
-                digit_x.add(r - c)
-                digit_y.add(r + c)
-                track(num + 1)
-                column.remove(c)
-                digit_x.remove(r - c)
-                digit_y.remove(r + c)
+            if rup[r + c]:
+                continue
 
-    track(0)
+            if rdown[r - c + n]:
+                continue
 
-    return cnt[0]
+            cols[c] = True
+            rup[r + c] = True
+            rdown[r - c + n] = True
+            li.append((r, c))
+            recur(r + 1)
+            li.pop()
+            cols[c] = False
+            rup[r + c] = False
+            rdown[r - c + n] = False
+
+    recur(0)
+    return cnt
 
 
 n = int(input())
-print(solution(n))
-
-
+print(main(n))
