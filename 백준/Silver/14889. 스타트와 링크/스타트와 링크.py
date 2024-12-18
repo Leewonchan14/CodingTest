@@ -1,48 +1,39 @@
+def combi(n, k):
+    li = []
+    result = []
+    
+    def recur():
+        if len(li) == k:
+            result.append(li[:])
+            return
+        
+        for i in range(n):
+            if not li or i > li[-1]:
+                li.append(i)
+                recur()
+                li.pop()
+    
+    recur()
+    return result
+
+def main(n, maps):
+    minv = float('inf')
+    combiNto2 = combi(n // 2, 2)
+    for teamA in combi(n, n // 2):
+        teamB = [i for i in range(n) if i not in teamA]
+        sumA = sum([maps[teamA[a]][teamA[b]] + maps[teamA[b]][teamA[a]] for a,b in combiNto2])
+        sumB = sum([maps[teamB[a]][teamB[b]] + maps[teamB[b]][teamB[a]] for a,b in combiNto2])
+        
+        minv = min(minv, abs(sumA - sumB))
+        
+    return minv
+    
+
 import sys
 
 input = sys.stdin.readline
 
-
-def getMid(n, li, result):
-    if len(li) == n // 2:
-        result.append(li[:])
-        return result
-
-    for i in range(n):
-        if not li or i > li[-1]:
-            li.append(i)
-            result = getMid(n, li, result)
-            li.pop()
-
-    return result
-
-
-def get2(n, li, result):
-    if len(li) == 2:
-        result.append(li[:])
-        return result
-
-    for i in range(n):
-        li.append(i)
-        result = get2(n, li, result)
-        li.pop()
-
-    return result
-
-
-def main(n, arr):
-    minv = float("inf")
-    two = get2(n // 2, [], [])
-    for teamA in getMid(n, [], []):
-        teamB = [i for i in range(n) if i not in teamA]
-        sumA = sum([arr[teamA[a]][teamA[b]] for a, b in two])
-        sumB = sum([arr[teamB[a]][teamB[b]] for a, b in two])
-        minv = min(minv, abs(sumA - sumB))
-
-    return minv
-
-
 n = int(input())
-arr = [[int(i) for i in input().split()] for _ in range(n)]
+maps = [[int(i) for i in input().split()] for _ in range(n)]
 
-print(main(n, arr))
+print(main(n, maps))
