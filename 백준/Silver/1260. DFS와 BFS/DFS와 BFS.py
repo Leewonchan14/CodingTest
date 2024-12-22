@@ -5,7 +5,6 @@ input = sys.stdin.readline
 
 
 def main(start, dic, n):
-    li = [start]
     visited = [False] * (n + 1)
     visited[start] = True
 
@@ -32,7 +31,7 @@ def main(start, dic, n):
             s = que.popleft()
             print(s, end=" ")
 
-            for nn in dic.get(s, []):
+            for nn in dic[s]:
                 if not visited[nn]:
                     visited[nn] = True
                     que.append(nn)
@@ -41,13 +40,10 @@ def main(start, dic, n):
 
 
 n, tc, start = map(int, input().split())
-dic = {start: []}
+dic = {i + 1: [] for i in range(n)}
 for _ in range(tc):
     a, b = map(int, input().split())
-    dic[a] = dic.get(a, [])
     dic[a].append(b)
-
-    dic[b] = dic.get(b, [])
     dic[b].append(a)
 
 
