@@ -3,67 +3,55 @@ from collections import deque
 
 input = sys.stdin.readline
 
-"""
-map = {vertax : sorted (int[]) } 
-"""
 
-n, m, v = map(int, input().split())
+def main(start, dic, n):
+    li = [start]
+    visited = [False] * (n + 1)
+    visited[start] = True
 
-maped = {}
+    def recur(start):
+        print(start, end=" ")
+        for nn in dic[start]:
+            if visited[nn]:
+                continue
 
+            visited[nn] = True
+            recur(nn)
 
-def bfs(v, maped):
-    visited = {i + 1: False for i in range(n)}
-    rst = []
-    que = deque()
+    recur(start)
+    print()
 
-    visited[v] = True
-    que.append(v)
+    visited = [False] * (n + 1)
+    visited[start] = True
 
-    while que:
-        key = que.popleft()
-        rst.append(key)
-        relation = maped.get(key, [])
+    def bfs():
+        que = deque()
+        que.append((start))
 
-        for item in relation:
-            if not visited[item]:
-                visited[item] = True
-                que.append(item)
+        while que:
+            s = que.popleft()
+            print(s, end=" ")
 
-    return " ".join(map(str, rst))
+            for nn in dic.get(s, []):
+                if not visited[nn]:
+                    visited[nn] = True
+                    que.append(nn)
 
-
-def dfs(v, maped):
-    visited = {i + 1: False for i in range(n)}
-    rst = []
-    stk = [v]
-
-    while stk:
-        key = stk.pop()
-        if visited[key]:
-            continue
-        rst.append(key)
-        visited[key] = True
-        relation = maped.get(key, [])
-        relation.sort()
-
-        for i in range(len(relation) - 1, -1, -1):
-            if not visited[relation[i]]:
-                stk.append(relation[i])
-
-    return " ".join(map(str, rst))
+    bfs()
 
 
-# 간선 입력받기
-for i in range(m):
+n, tc, start = map(int, input().split())
+dic = {start: []}
+for _ in range(tc):
     a, b = map(int, input().split())
-    relation = maped.get(a, [])
-    relation.append(b)
-    maped[a] = relation
+    dic[a] = dic.get(a, [])
+    dic[a].append(b)
 
-    relation = maped.get(b, [])
-    relation.append(a)
-    maped[b] = relation
+    dic[b] = dic.get(b, [])
+    dic[b].append(a)
 
-print(dfs(v, maped))
-print(bfs(v, maped))
+
+for k in dic.keys():
+    dic[k].sort()
+
+main(start, dic, n)
