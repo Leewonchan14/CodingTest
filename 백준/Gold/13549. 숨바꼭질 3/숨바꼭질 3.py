@@ -18,7 +18,7 @@ def main(n, k):
         if n == k and count_dic[n] == 0:
             return cnt
 
-        for dn, dc in [(-1, 1), (1, 1), (n, 0)]:
+        for dn, dc in [(-1, 1), (n, 0), (1, 1)]:
             nn = n + dn
             nc = cnt + dc
 
