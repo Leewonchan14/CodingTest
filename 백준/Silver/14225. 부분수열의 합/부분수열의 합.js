@@ -4,7 +4,7 @@ let [_, arr] = fs.readFileSync('dev/stdin').toString().trim().split("\n");
 arr = arr.split(" ").map(Number);
 
 const main = () => {
-    const dp = Array.from({length : 10 ** 6}).fill(true);
+    const dp = Array.from({length : 10 ** 6 + 1}).fill(true);
     const li = []
     const recur = (sumv) => {
         if (li.length != 0 && sumv < dp.length) {
