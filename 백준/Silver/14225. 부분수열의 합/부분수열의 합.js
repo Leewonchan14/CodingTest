@@ -1,20 +1,20 @@
-const fs = require('fs');
+const fs = require('fs')
 
-let [_, arr] = fs.readFileSync('dev/stdin').toString().trim().split("\n");
-arr = arr.split(" ").map(Number);
+const read =fs.readFileSync('dev/stdin').toString().trim();
+
+let [n, arr] = read.split("\n");
+n = Number(n)
+arr = arr.split(" ").map(Number)
 
 const main = () => {
-    const dp = Array.from({length : 10 ** 6 + 1}).fill(true);
-    const li = []
+    const mask = new Array(100000 * 20 + 1).fill(false);
+    const li = [];
     const recur = (sumv) => {
-        if (li.length != 0 && sumv < dp.length) {
-            dp[sumv] = false;
-        }
+        if (li.length) mask[sumv] = true;
+        if (li.length == n) return;
         
-        if (li.length === arr.length) return;
-        
-        for (let i = 0; i < arr.length; i++){
-            if(!li.length || i > li.at(-1)){
+        for(let i = 0 ; i < arr.length; i++ ){
+            if(!li.length || i > li.at(-1)) {
                 li.push(i)
                 recur(sumv + arr[i]);
                 li.pop()
@@ -22,11 +22,11 @@ const main = () => {
         }
     }
     
-    recur(0)
+    recur(0);
     
-    for(let i = 1; i < dp.length; i++){
-        if(dp[i]) return i;
-    }
+    let i = 1
+    while (mask[i]) i++;
+    return i;
 }
 
 console.log(main())
