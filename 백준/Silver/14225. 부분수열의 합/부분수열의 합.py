@@ -2,17 +2,16 @@ import sys
 
 input = sys.stdin.readline
 
-input()
+n = int(input())
 arr = [int(i) for i in input().split()]
 
 def main():
-    visited = [False] * (10 ** 6 + 1)
     li = []
+    mask = [False] * (100000 * 20 + 1)
     def recur(sumv):
-        if li and sumv < len(visited):
-            visited[sumv] = True
-            
-        if len(li) == len(arr):
+        if li:
+            mask[sumv] = True
+        if len(li) == n:
             return
         
         for i in range(len(arr)):
@@ -20,10 +19,11 @@ def main():
                 li.append(i)
                 recur(sumv + arr[i])
                 li.pop()
-                
     recur(0)
-    for i in range(1, len(visited)):
-        if not visited[i]:
-            return i
+    i = 1
+    while mask[i]:
+        i += 1
+        
+    return i
 
 print(main())
