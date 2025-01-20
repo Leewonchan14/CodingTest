@@ -5,7 +5,7 @@ input = sys.stdin.readline
 
 a, b, c = map(int, input().split())
 visited = set()
-visited.add((a, b, c))
+visited.add(",".join(map(str, sorted([a, b, c]))))
 
 
 def find_group(tu):
@@ -23,7 +23,7 @@ def find_group(tu):
 
 def main():
     que = deque()
-    que.append((a, b, c))
+    que.append([a, b, c])
 
     while que:
         tu = que.popleft()
@@ -38,11 +38,11 @@ def main():
             li[j] = tu[j] - tu[i]
             li[k] = tu[k]
 
-            ntu = tuple(li)
+            str_li = ",".join(map(str, sorted(li)))
 
-            if ntu not in visited:
-                visited.add(ntu)
-                que.append(ntu)
+            if str_li not in visited:
+                visited.add(str_li)
+                que.append(li)
 
     return 0
 
