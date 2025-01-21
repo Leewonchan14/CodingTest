@@ -5,9 +5,9 @@ input = sys.stdin.readline
 n, m, k = map(int, input().split())
 
 maps = [[int(i) for i in input().strip()] for _ in range(n)]
-visited = [[[float("inf")] * (k + 1) for _ in range(m)] for _ in range(n)]
-dy = [0, -1, 0, 1]
-dx = [-1, 0, 1, 0]
+visited = [[[0] * (k + 1) for _ in range(m)] for _ in range(n)]
+dy = [0, 1, 0, -1]
+dx = [1, 0, -1, 0]
 
 
 def inner(y, x):
@@ -16,42 +16,36 @@ def inner(y, x):
 
 def bfs(y, x):
     que = deque()
-    que.append((y, x, k))
+    que.append((y, x, 1, k))
     visited[y][x][k] = 1
 
     while que:
-        y, x, chance = que.popleft()
+        y, x, dist, chance = que.popleft()
 
         if y == n - 1 and x == m - 1:
-            return visited[y][x][chance]
+            return dist
 
         for i in range(4):
             ny, nx = y + dy[i], x + dx[i]
-
-            # 밖이면 넘어가기
             if not inner(ny, nx):
                 continue
 
-            # 기회없는데 벽이면 넘어가기
-            if chance == 0 and maps[ny][nx] == 1:
+            # 길이면 그냥 간다.
+            if maps[ny][nx] == 0 and visited[ny][nx][chance] == 0:
+                visited[ny][nx][chance] = dist + 1
+                que.append((ny, nx, dist + 1, chance))
                 continue
 
-            n_chance = chance
-            if maps[ny][nx] == 1:
-                n_chance -= 1
-
-            # 가도 크거나 같다면 갈필요 없음
-            if visited[y][x][chance] + 1 >= visited[ny][nx][n_chance]:
-                continue
-
-            visited[ny][nx][n_chance] = visited[y][x][chance] + 1
-            que.append((ny, nx, n_chance))
+            # 벽인데 부수고 간다.
+            if maps[ny][nx] == 1 and chance > 0 and visited[ny][nx][chance - 1] == 0:
+                visited[ny][nx][chance - 1] = dist + 1
+                que.append((ny, nx, dist + 1, chance - 1))
 
     return -1
 
 
 def main():
-    return bfs(0, 0)
+    print(bfs(0, 0))
 
 
-print(main())
+main()
