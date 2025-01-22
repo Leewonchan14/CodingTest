@@ -58,7 +58,7 @@ def bfs():
         for i in range(4):
             ns = cals[i](s)
 
-            if (i == 0 or i == 1) and ((ns > t) or (ns != 0 and t % ns != 0)):
+            if (i == 0 or i == 1) and ((ns != 0 and t % ns != 0)):
                 continue
 
             if ns not in visited:
