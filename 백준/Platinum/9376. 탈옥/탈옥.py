@@ -50,7 +50,7 @@ def bfs(y, x):
                 # 길인경우 그냥간다.
                 if (maps[ny][nx] == "." or maps[ny][nx] == "$") and hit < visited[ny][nx]:
                     visited[ny][nx] = hit
-                    que.append((ny, nx, hit))
+                    que.appendleft((ny, nx, hit))
 
                 # 문인경우 부순다.
                 if maps[ny][nx] == "#" and hit + 1 < visited[ny][nx]:
