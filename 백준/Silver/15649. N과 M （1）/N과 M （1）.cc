@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void recur(int n, int m, vector<int> &li, int size, int visited[]);
+int recur(int n, int m, vector<int> &li, int size, int visited[]);
 
 int main()
 {
@@ -26,7 +26,7 @@ int main()
     recur(n, m, li, 0, visited);
 }
 
-void recur(int n, int m, vector<int> &li, int size, int visited[])
+int recur(int n, int m, vector<int> &li, int size, int visited[])
 {
 
     if (size == m)
@@ -36,7 +36,7 @@ void recur(int n, int m, vector<int> &li, int size, int visited[])
             cout << i << " ";
         }
         cout << "\n";
-        return;
+        return 0;
     }
 
     for (int i = 1; i <= n; i++)
@@ -51,5 +51,5 @@ void recur(int n, int m, vector<int> &li, int size, int visited[])
         }
     }
 
-    return;
+    return 0;
 }
