@@ -1,0 +1,18 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int n, x;
+    cin >> n >> x;
+    for (size_t i = 0; i < n; i++)
+    {
+        int item;
+        cin >> item;
+        if (item < x)
+            cout << item << " ";
+    }
+}
