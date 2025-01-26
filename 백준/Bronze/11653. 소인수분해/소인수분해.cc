@@ -14,24 +14,6 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(NULL);
 
-    bool *che = new bool[MAX + 1];
-
-    for (size_t i = 2; i < MAX + 1; i++)
-    {
-        che[i] = true;
-    }
-
-    for (size_t i = 2; i < MAX + 1; i++)
-    {
-        if (che[i])
-        {
-            for (size_t j = i + i; j < MAX + 1; j += i)
-            {
-                che[j] = false;
-            }
-        }
-    }
-
     long n;
     cin >> n;
 
@@ -42,11 +24,13 @@ int main()
         {
             cout << i << endl;
             n /= i;
+            continue;
         }
-
-        while (n > 1 && n % i != 0)
+        i++;
+        if (i * i > n)
         {
-            i += 1;
+            cout << n;
+            break;
         }
     }
 }
