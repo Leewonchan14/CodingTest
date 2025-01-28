@@ -9,16 +9,16 @@ using namespace std;
 
 struct QueItem
 {
-  vector<vector<string>> li;
+  vector<string> li;
   int cnt;
 };
 
 unordered_map<string, int> visited;
-vector<vector<string>> li;
+vector<string> li;
 
-string getKey(vector<vector<string>> &li);
-string join(vector<string> &li);
-bool isClear(vector<vector<string>> &li);
+string getKey(vector<string> &li);
+string join(vector<string> &li, string del);
+bool isClear(vector<string> &li);
 
 int main()
 {
@@ -33,10 +33,7 @@ int main()
       continue;
 
     cin >> s;
-    for (size_t j = 0; j < a; j++)
-    {
-      li[i].push_back(s.substr(j, 1));
-    }
+    li[i] = s;
   }
 
   queue<QueItem> que;
@@ -57,7 +54,7 @@ int main()
 
     for (size_t i = 0; i < 3; i++)
     {
-      if (li[i].size() == 0)
+      if (li[i].length() == 0)
         continue;
 
       for (size_t j = 0; j < 3; j++)
@@ -66,36 +63,30 @@ int main()
           continue;
 
         int k = 3 - i - j;
-        vector<vector<string>> other(li.begin(), li.end());
+        vector<string> other(li.begin(), li.end());
         other[j].push_back(other[i].back());
         other[i].pop_back();
 
-        vector<vector<string>> nli;
-        nli.resize(3);
-        nli[i] = other[i];
-        nli[j] = other[j];
-        nli[k] = other[k];
-
-        string key = getKey(nli);
+        string key = getKey(other);
 
         if (visited[key])
           continue;
 
         visited[key] = 1;
-        que.push(QueItem{nli, cnt + 1});
+        que.push(QueItem{other, cnt + 1});
       }
     }
   }
 }
 
-bool isClear(vector<vector<string>> &li)
+bool isClear(vector<string> &li)
 {
   string c = "ABC";
   for (size_t i = 0; i < 3; i++)
   {
     for (auto &&item : li[i])
     {
-      if (item != c.substr(i, 1))
+      if (item != c.at(i))
       {
         return false;
       }
@@ -105,25 +96,22 @@ bool isClear(vector<vector<string>> &li)
   return true;
 }
 
-string getKey(vector<vector<string>> &li)
+string getKey(vector<string> &li)
 {
-  string s = "";
-  s.append(join(li[0]));
-  s.append(" ");
-  s.append(join(li[1]));
-  s.append(" ");
-  s.append(join(li[2]));
-
-  return s;
+  return join(li, " ");
 }
 
-string join(vector<string> &li)
+string join(vector<string> &li, string del)
 {
   string s = "";
 
   for (size_t i = 0; i < li.size(); i++)
   {
     s.append(li[i]);
+    if (i != li.size() - 1)
+    {
+      s.append(del);
+    }
   }
 
   return s;
