@@ -16,9 +16,9 @@ struct QueItem
 unordered_map<string, int> visited;
 vector<vector<string>> li;
 
-string getKey(vector<vector<string>> li);
-string join(vector<string> li);
-bool isClear(vector<vector<string>> li);
+string getKey(vector<vector<string>> &li);
+string join(vector<string> &li);
+bool isClear(vector<vector<string>> &li);
 
 int main()
 {
@@ -88,7 +88,7 @@ int main()
   }
 }
 
-bool isClear(vector<vector<string>> li)
+bool isClear(vector<vector<string>> &li)
 {
   string c = "ABC";
   for (size_t i = 0; i < 3; i++)
@@ -105,12 +105,19 @@ bool isClear(vector<vector<string>> li)
   return true;
 }
 
-string getKey(vector<vector<string>> li)
+string getKey(vector<vector<string>> &li)
 {
-  return join((vector<string>{join(li[0]), " ", join(li[1]), " ", join(li[2])}));
+  string s = "";
+  s.append(join(li[0]));
+  s.append(" ");
+  s.append(join(li[1]));
+  s.append(" ");
+  s.append(join(li[2]));
+
+  return s;
 }
 
-string join(vector<string> li)
+string join(vector<string> &li)
 {
   string s = "";
 
