@@ -11,26 +11,10 @@ costs = [[False] * (n + 1) for _ in range(n)]
 cache = {}
 
 
-def isPelin(s, e):
-    key = (s, e)
-    if (key in cache):
-        return cache[key]
-
-    if s > e:
-        return True
-
-    if maps[s] != maps[e - 1]:
-        cache[key] = False
-        return False
-
-    v = isPelin(s + 1, e - 1)
-    cache[key] = v
-    return v
-
-
 for e in range(1, n + 1):
     for s in range(e - 1, -1, -1):
-        costs[s][e] = isPelin(s, e)
+        costs[s][e] = maps[s] == maps[e -
+                                      1] and (s + 1 >= e - 1 or costs[s + 1][e - 1])
 
 
 tc = int(input())
