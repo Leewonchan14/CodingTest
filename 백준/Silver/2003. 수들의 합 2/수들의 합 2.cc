@@ -3,15 +3,16 @@
 
 using namespace std;
 
-int n,m,v;
+int n,m;
 vector<int> arr;
 
 int main(){
     cin >> n >> m;
     
+    arr.resize(n);
+    
     for(int i = 0; i < n; i ++ ){
-        cin >> v;
-        arr.push_back(v);
+        cin >> arr[i];
     }
     
     long sum = arr[0];
