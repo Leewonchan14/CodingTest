@@ -1,46 +1,32 @@
 import sys
 
-def main(arr):
+input = sys.stdin.readline
+
+def min_cost_to_merge(arr):
     n = len(arr)
-    if n == 0:
-        print(0)
-        return
-    
-    # 누적 합 배열 생성
-    prefix = [0] * (n + 1)
-    for i in range(n):
-        prefix[i+1] = prefix[i] + arr[i]
-    
-    # DP 및 최적 분기점 저장 배열 초기화
-    dp = [[0]*n for _ in range(n)]
-    opt = [[0]*n for _ in range(n)]
-    
-    for i in range(n):
-        opt[i][i] = i  # 길이 1인 구간 초기화
-    
-    # 구간 길이 2부터 시작
-    for length in range(2, n+1):
+    dp = [[0] * n for _ in range(n)]  # DP 배열
+    prefix_sum = [0] * (n + 1)  # 누적합 배열
+
+    # 누적합 계산 (prefix_sum[i] = arr[0] + ... + arr[i-1])
+    for i in range(1, n + 1):
+        prefix_sum[i] = prefix_sum[i - 1] + arr[i - 1]
+
+    # DP 테이블 채우기
+    for length in range(2, n + 1):  # 부분 구간 크기 2 이상부터 시작
         for l in range(n - length + 1):
             r = l + length - 1
             dp[l][r] = float('inf')
-            
-            # 최적 분기점 범위 설정
-            kl = opt[l][r-1] if l < r-1 else l
-            kr = opt[l+1][r] if l+1 < r else r-1
-            
-            # 최적 분기점 탐색
-            for k in range(kl, kr+1):
-                current = dp[l][k] + dp[k+1][r] + (prefix[r+1] - prefix[l])
-                if current < dp[l][r]:
-                    dp[l][r] = current
-                    opt[l][r] = k
-    
-    print(dp[0][n-1])
+            # 가능한 모든 분할 지점 탐색
+            for mid in range(l, r):
+                dp[l][r] = min(dp[l][r], dp[l][mid] + dp[mid + 1][r])
+            # 최소 비용 + 현재 구간 합
+            dp[l][r] += prefix_sum[r + 1] - prefix_sum[l]
 
-# 입력 처리
-input = sys.stdin.readline
+    print(dp[0][n - 1])  # 전체 합치기 비용 출력
+
+
 tc = int(input())
 for _ in range(tc):
-    input()  # 배열 크기 입력 건너뛰기
+    int(input())  # 파일 개수 (사용하지 않음)
     arr = list(map(int, input().split()))
-    main(arr)
+    min_cost_to_merge(arr)
