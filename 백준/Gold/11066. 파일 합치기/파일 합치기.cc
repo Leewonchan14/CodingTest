@@ -29,7 +29,7 @@ int main()
     {
       for (int l = r - 1; l >= 0; l--)
       {
-        long minv = (long)10000 * 5000 + 1;
+        long minv = 10000 * 10000 + 1;
         long sumv = arr[r];
         for (int k = r - 1; k >= l; k--)
         {
