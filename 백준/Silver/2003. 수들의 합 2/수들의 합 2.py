@@ -3,20 +3,33 @@ import sys
 input = sys.stdin.readline
 
 n,m = map(int, input().split())
-arr = [int(i) for i in input().split()]
+arr = list(map(int, input().split()))
 
-def main():
-    dp = [0]
-    for i in range(len(arr)):
-        dp.append(dp[-1] + arr[i])
+sumv = arr[0]
+    
+l = 0
+r = 1
+cnt = 0
+
+while True:
+    if sumv == m:
+        cnt += 1
+        sumv -= arr[l]
+        l += 1
+        continue
         
-    cnt = 0
-    for i in range(1, len(dp)):
-        for j in range(0, i):
-            if dp[i] - dp[j] == m:
-                cnt += 1
-                
-    return cnt
-            
+    if sumv < m:
+        if r >= n:
+            break
+        sumv += arr[r]
+        r += 1
+        continue
+        
+    if sumv > m:
+        sumv -= arr[l]
+        l += 1
+        continue
+        
+print(cnt)
 
-print(main())
+        
