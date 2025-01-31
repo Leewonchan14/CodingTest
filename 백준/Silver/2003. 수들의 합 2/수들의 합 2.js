@@ -8,15 +8,27 @@ const [n,m] = nm.split(" ").map(Number);
 arr = arr.split(" ").map(Number);
 
 const main = () => {
-    const dp = [0];
-    for (let i of arr){
-        dp.push(dp.at(-1) + i);
-    }
-    
+    let l = 0;
+    let r = 1;
+    let sumv = arr[0];
     let cnt = 0;
-    for (let i = 1; i < dp.length; i++) {
-        for (let j = 0; j < i; j ++){
-            if (dp[i] - dp[j] == m) cnt += 1;
+    while (true){
+        if (sumv === m){
+            cnt += 1;
+            sumv -= arr[l];
+            l += 1;
+            continue;
+        }
+        if (sumv < m) {
+            if (r >= n) break;
+            sumv += arr[r];
+            r += 1;
+            continue;
+        }
+        if (sumv > m) {
+            sumv -= arr[l];
+            l += 1;
+            continue;
         }
     }
     
