@@ -1,11 +1,6 @@
 import sys
 
-n = int(sys.stdin.readline())
+input = sys.stdin.readline
 
-arr = []
-
-for i in range(n):
-    a,b = map(int, sys.stdin.readline().split())
-    arr.append(a + b)
-    
-print(*arr, sep="\n")
+n = int(input())
+print(*[sum(map(int, input().split())) for _ in range(n)], sep="\n")
