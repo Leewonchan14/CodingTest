@@ -1,6 +1,15 @@
+import sys
+
+input = sys.stdin.readline
+
 n = int(input())
-def facto(n):
-    if n <= 1 :
-        return 1
-    return facto(n-1) * n
-print(facto(n))
+
+def main():
+    def recur(n):
+        if n == 0:
+            return 1
+        return recur(n - 1) * n
+    
+    print(recur(n))
+
+main()
