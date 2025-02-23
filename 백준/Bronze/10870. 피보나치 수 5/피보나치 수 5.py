@@ -1,9 +1,14 @@
-def fibo(n):
-    if n == 0 :
-        return 0
-    if n <= 1:
-        return 1
-    return fibo(n-1) + fibo(n-2)
+import sys
+input = sys.stdin.readline
 
-n = int(input())
-print(fibo(n))
+def main():
+    n = int(input())
+    def recur(n):
+        if n == 0:
+            return 0
+        if n <= 2:
+            return 1
+        return recur(n - 1) + recur(n - 2)
+    print(recur(n))
+
+main()
