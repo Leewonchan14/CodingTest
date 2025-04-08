@@ -1,16 +1,16 @@
-import sys
-
-sys.setrecursionlimit(10 ** 9)
-
-def recursion(n, start, end, mid, li):
-    if n == 1:
-        li.append([start, end])
-        return li
-    
-    li = recursion(n - 1, start, mid, end, li)
-    li = recursion(1, start, end, mid, li)
-    li = recursion(n - 1, mid, end, start, li)
-    return li
-
 def solution(n):
-    return recursion(n, 1, 3, 2, [])
+    answer = []
+    def recur(s, e, other, n):
+        if n == 1:
+            answer.append([s, e])
+            return
+        
+        recur(s, other, e, n - 1)
+        recur(s, e, other, 1)
+        recur(other, e, s, n - 1)
+        
+    recur(1, 3, 2, n)
+    
+    return answer
+        
+    
