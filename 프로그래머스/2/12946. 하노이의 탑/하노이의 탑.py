@@ -1,15 +1,16 @@
 def solution(n):
     answer = []
-    def recur(s, e, other, n):
+    def recur(s, e, n):
+        o = 6 - s - e
         if n == 1:
             answer.append([s, e])
             return
         
-        recur(s, other, e, n - 1)
-        recur(s, e, other, 1)
-        recur(other, e, s, n - 1)
+        recur(s, o, n - 1)
+        recur(s, e, 1)
+        recur(o, e, n - 1)
         
-    recur(1, 3, 2, n)
+    recur(1, 3, n)
     
     return answer
         
