@@ -1,12 +1,23 @@
+import sys
+
+input = sys.stdin.readline
+
 n = int(input())
-a = map(int, input().split())
-n = int(input())
-b = map(int, input().split())
+arr = [int(i) for i in input().split()]
+arr.sort()
 
-dic = {}
+m = int(input())
+arr2 = [int(i) for i in input().split()]
 
-for a1 in a:
-   dic[a1] = ""
-
-for b1 in b:
-    print(1 if b1 in dic else 0)
+def main():
+    dic = {}
+    for i in arr:
+        dic[i] = 0
+    
+    for i in arr2:
+        if i in dic:
+            print(1)
+        else:
+            print(0)
+            
+main()
