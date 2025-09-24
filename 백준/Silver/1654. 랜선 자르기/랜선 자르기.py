@@ -3,24 +3,23 @@ import sys
 input = sys.stdin.readline
 
 k, n = [int(i) for i in input().split()]
-dp = []
-for _ in range(k):
-    dp.append(int(input()))
+
+li = [int(input()) for _ in range(k)]
 
 left = 1
-right = max(dp)
-result = 0
-
+right = max(li)
+res = -1
 while True:
     mid = (left + right) // 2
-    cal = sum([i // mid for i in dp])
-
-    if cal < n:
-        right = mid - 1
-    elif cal >= n:
+    cal = sum([i // mid for i in li])
+    
+    if cal >= n:
         left = mid + 1
-        result = mid
-
+        res = mid
+    elif cal < n:
+        right = mid - 1
+        
     if right < left:
-        print(result)
         break
+
+print(res)
